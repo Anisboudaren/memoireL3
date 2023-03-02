@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
-const member = require("../assets/modles/modelMember");
-const user = require("../assets/modles/modelUser");
-const medRecord = require("../assets/modles/modelMedRecord");
-const report = require("../assets/modles/modelReport");
-const task = require("../assets/modles/modelTask");
-const team = require("../assets/modles/modelTeam");
+const member = require("../models/member.model");
+const user = require("../models/user.model");
+const medRecord = require("../models/record.model");
+const report = require("../models/report.model");
+const task = require("../models/task.model");
+const team = require("../models/team.model");
 
 async function insertUser(userObject) {
   try {

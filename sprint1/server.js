@@ -1,70 +1,52 @@
 const mongoose = require("mongoose");
 const express = require("express");
+const cors = require("cors");
+const bp = require("body-parser");
+const app = express()
 
-const insertion = require("./src/insertion");
-
-mongoose
-  .connect("mongodb://localhost/memoire")
+mongoose.connect("mongodb://localhost/memoire")
   .then(() => console.log("connected"));
 
-const memObject = {
-  firstName: "don't care",
-  lastName: "don't care too",
-  role: "doctor",
-  address: {
-    city: "khroub",
-    street: "1600",
-    appartement: "yes",
-  },
-  phoneNumber: "069857412",
-  e_mail: "noonecare@gmail.com",
-  speciality: "useless",
-  avatar: "avatar.png",
-};
+  app.use(cors())
+  app.use(bp.urlencoded({extended:true}))
+  app.use(bp.json())
 
-async function insert() {
-  const res = await insertion(memObject);
-  console.log(res);
-}
-insert();
-const app = express();
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/src/html/login.html");
-});
-app.post("/login", async (req, res) => {
-  const r = await findUser(req.email);
-  console.log(r);
-  if (typeof r === "undefined") res.send({ message: "404 user not found" });
-  else res.send({ message: "success you user is " });
-});
+app.use('/' , require('./routes/user.route.js'))
 
 app.listen(3000, () => {
   console.log("listening at 3000");
-});
+})
+const bcrypt = require('bcrypt')
+const saltRounds = 10 
 
-// member.create({
-//   memberID: "69",
-//   firstName: "gregorie",
-//   lastName: "house",
-//   userName: "vicodin",
-//   password: "we will hash that shit later",
-//   role: "doctor",
-//   tasks: ["do that ", "do this"],
-//   address: "i think new jersey prinston something",
-//   phoneNumber: 69696969,
-//   e_mail: "itslate@tired.fr",
-//   speciality: "t3 al klawi , blk",
-// });
-// async function getHim() {
-//   housy = await user.findOne({ username: "vicodin" });
-//   owny = await member.findById(housy.owner);
-//   console.log(owny);
-// }
-// getHim();
-
-async function findUser(un) {
-  await user.find({ username: un }).then((res) => {
-    console.log(res);
-    return res;
-  });
+const insert = require('./src/insertion');
+for (let i = 0; i < 5; i++) {
+  let doc = {
+    firstName: "member" + i ,
+    lastName: "member" + i ,
+    role: "doctor",
+    address: {
+      city: "LA",
+      street: "dunno",
+      apartment: "don't care",
+    },
+    phoneNumber: "0659595959", 
+    e_mail: "j3jou3@gmail.com", 
+    specialty: "gynecologist", 
+    avatar: "avatar.png",
+  }
+   bcrypt.hash('password'+i+'#', saltRounds, async (err, hash) => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log("this is : " + await insert.insertMember(doc)) 
+          
+          insert.insertUser({username :'username' + i ,password: hash , owner: mem._id})
+        }
+      });
+  
+  
+ 
 }
+
+
