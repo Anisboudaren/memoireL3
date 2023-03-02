@@ -1,0 +1,16 @@
+{
+  "name": "sprint1",
+  "version": "1.0.0",
+  "description": "this part cover the functionalities of team members",
+  "main": "server.js",
+  "scripts": {
+    "devstart": "nodemon server.js"
+  },
+  "author": "anisANDnidal",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.9.2",
+    "nodemon": "^2.0.20"
+  }
+}
