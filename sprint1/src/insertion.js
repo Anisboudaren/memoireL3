@@ -6,6 +6,7 @@ const medRecord = require("../models/record.model");
 const report = require("../models/report.model");
 const task = require("../models/task.model");
 const team = require("../models/team.model");
+const patient = require("../models/patient.model")
 
 async function insertUser(userObject) {
   try {
@@ -18,10 +19,11 @@ async function insertUser(userObject) {
     throw error;
   }
 }
-async function insertMember(memberObject) {
+async function insertMember(memberObject , username , password) {
   try {
-    await member.create(memberObject).then((result) => {
+    return member.create(memberObject).then((result) => {
       console.log(result);
+      //insertUser({username , password , owner: result._id})
       return result;
     });
   } catch (error) {
@@ -43,7 +45,7 @@ async function insertTeam(teamObject) {
 async function insertReport(reportObject) {
   try {
     await report.create(reportObject).then((result) => {
-      console.log(result);
+      console.log("a new report has been created");
       return result;
     });
   } catch (error) {
@@ -73,6 +75,17 @@ async function insertMedRecord(medRecordObject) {
     throw error;
   }
 }
+async function insertPatient(patientObject) {
+  try {
+    await patient.create(patientObject).then((result) => {
+      console.log("patient has been added");
+      return result;
+    });
+  } catch (error) {
+    console.log("error inserting a patient: " + error.message);
+    throw error;
+  }
+}
 
 module.exports = {
   insertMember,
@@ -81,4 +94,5 @@ module.exports = {
   insertTask,
   insertUser,
   insertReport,
+  insertPatient
 };
