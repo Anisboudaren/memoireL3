@@ -5,7 +5,7 @@ const Member = require("../models/member.model");
 const bcrypt = require('bcrypt')
 
 async function authUser(req , res , next) {
-   
+   console.log(req.username , req.password);
     if(req.username == null || req.password == null ){
         res.status(403)
         return res.send("you need to log in")
@@ -16,11 +16,15 @@ async function authUser(req , res , next) {
             if(result){
                 res.status(200)
                 req.user = (userResult)
+                console.log(req.user);
             }else{
                 res.status(403)
                 res.send("you need to log in")
             }
         })
+    }).catch(err => {
+      console.log(err);
+      res.send("something went wrong")
     })
 
     next()

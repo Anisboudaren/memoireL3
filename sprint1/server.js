@@ -15,8 +15,8 @@ app.use(setUser)
 app.use('/'  , require("./routes/tasks.route"))
 app.use('/' , require('./routes/user.route.js'))
 app.use('/' , require('./routes/member.route'))
-
-
+app.use('/' , require("./routes/report.route"))
+app.use('/'  , require("./routes/patient.route"))
 const bcrypt = require('bcrypt')
 const saltRounds = 10 
 
@@ -24,10 +24,11 @@ const insert = require('./src/insertion');
 
 const listpatients  = require("./test/mockData/patient.data")
 const listreports = require("./test/mockData/reports.data")
+const listtasks = require("./test/mockData/task.data")
 
-listreports.forEach(report =>{
-  insert.insertReport(report);
-})
+// listtasks.forEach(report =>{
+//   insert.insertTask(report);
+// })
 // list.forEach(patient => {
 //   patient.medicalConditions = [""]
 //   patient.medications = [""]
