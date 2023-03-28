@@ -4,8 +4,11 @@ const cors = require("cors");
 const bp = require("body-parser");
 const app = express()
 
-mongoose.connect("mongodb://localhost/memoire")
-  .then(() => console.log("connected"));
+ mongoose.connect("mongodb://localhost/memoire")
+  .then(() => {console.log("connected") 
+      console.log(mongoose.modelNames());
+    }
+    );
 
   app.use(cors())
   app.use(bp.urlencoded({extended:true}))
@@ -25,7 +28,15 @@ const insert = require('./src/insertion');
 const listpatients  = require("./test/mockData/patient.data")
 const listreports = require("./test/mockData/reports.data")
 const listtasks = require("./test/mockData/task.data")
-
+const User = require("./models/user.model")
+//insert.insertUser({ username : "Arlyn Boudaren" , password:"banana" , owner: "641a29503eb83925fbd2cae8" , role : 'patient'})
+User.find().populate('owner').exec((err, users) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(users);
+  }
+});
 // listtasks.forEach(report =>{
 //   insert.insertTask(report);
 // })

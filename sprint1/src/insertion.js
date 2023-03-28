@@ -6,12 +6,13 @@ const medRecord = require("../models/record.model");
 const report = require("../models/report.model");
 const task = require("../models/task.model");
 const team = require("../models/team.model");
-const patient = require("../models/patient.model")
+const patient = require("../models/patient.model");
+const { ROLES } = require("../config/roles_list");
 
-async function insertUser(userObject) {
+async function insertUser(userObject , role) {
   try {
     await user.create(userObject).then((result) => {
-      console.log(result);
+      console.log(role + " has been added");
       return result;
     });
   } catch (error) {

@@ -24,7 +24,7 @@ router.get("/patient/member" , async (req , res)=>{
     })
 })     
 router.get("/patient/filter" , (req , res)=>{
-    report.find({patient_id : req.body.patient_id , doctor_ID : req.body.doctor_ID})
+    patient.find({patient_id : req.body.patient_id , doctor_ID : req.body.doctor_ID})
     .then(list =>{
         res.json(list)
     }).catch(err =>{
@@ -33,6 +33,15 @@ router.get("/patient/filter" , (req , res)=>{
     })
     
 })
+
+router.get("/patient/id" ,(req , res ) =>{
+    patient.findById(req.body.patient_id).then(result =>{
+        res.send(result)
+    }).catch(err =>{
+        res.status(404).send("patient doesn't exist")
+    })
+   
+}) 
 
 
 module.exports = router
