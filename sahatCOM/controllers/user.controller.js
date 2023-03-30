@@ -1,10 +1,12 @@
 const createError = require("http-errors");
 const User = require("../models/user.model");
+const {genToken} = require("../utils/jwt")
 
 const addNewUser = async (req, res, next) => {
   console.log(req.body);
+  req.body.token = genToken(req.body)
   const newUser = new User(req.body);
-
+  
   const { error } = newUser.validation(req.body);
 
   if (error) {
