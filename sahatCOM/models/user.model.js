@@ -13,10 +13,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    token: {
-      type: String,
-      required: true,
-    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -50,7 +46,7 @@ userSchema.pre("save", async function () {
 const schema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
-  token: Joi.string().required(),
+
   owner: Joi.objectId().required(),
   role: Joi.string().valid("caregiver", "admin", "patient"),
 });
