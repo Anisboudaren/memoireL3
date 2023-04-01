@@ -21,8 +21,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["caregiver", "patient", "admin"],
-      default: "caregiver",
+      enum: ["Caregiver", "Patient", "Admin"],
     },
   },
   { timestamps: true }
@@ -48,7 +47,7 @@ const schema = Joi.object({
   password: Joi.string().required(),
 
   owner: Joi.objectId().required(),
-  role: Joi.string().valid("caregiver", "admin", "patient"),
+  role: Joi.string().valid("Caregiver", "Admin", "Patient"),
 });
 
 userSchema.methods.validation = function (userObject) {

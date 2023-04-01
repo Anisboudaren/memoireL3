@@ -1,5 +1,4 @@
 const createError = require("http-errors");
-const { findByIdAndUpdate } = require("../models/user.model");
 const User = require("../models/user.model");
 const { genToken } = require("../utils/jwt");
 
@@ -39,11 +38,11 @@ const addNewUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id, {}, { lean: true });
+    const user = await User.findById({_id : req.body.id}, {}, { lean: true });
 
     if (user) {
-      const willBeUpdated = await findByIdAndUpdate(
-        { _id: req.user.id },
+      const willBeUpdated = await User.findByIdAndUpdate(
+        { _id: req.body.id },
         req.body,
         { lean: true, new: true }
       );
@@ -59,31 +58,76 @@ const updateUser = async (req, res, next) => {
           message: "Something went wrong while updating user.",
         });
       }
+    } else {
+        return  res.status(404).json({
+        result : false, 
+        message : "no records has been found"
+      })
     }
   } catch (e) {
     next(createError(e));
   }
 };
 
-const deleteUser = "";
-
-const getUser = async (req, res, next) => {
-  const user = await User.findById(req.user._id);
-  req.user = user;
-  next;
+const deleteUser = async (req , res , next)=>{
+  try {
+    const user = await User.findOneAndDelete({_id: req.body.id})
+    if(user){
+      return  res.status(202).json({
+        result : true , 
+        message : "user successfully deleted"
+      })
+    }
+    else {
+      return  res.status(400).json({
+        result : false , 
+        message : "something went wrong with the delete"
+      })
+    }
+  } catch (e) {
+    next(createError(e))
+  }
 };
 
-const getAllusers = async (req, res, next) => {
-  const allUsers = await User.find();
-  res.status(200).json({
-    result: true,
-    AllUsers: allUsers,
-  });
+const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.body.id);
+    if(user){
+      req.user = user
+      return  res.status(200).json({
+        result : true , 
+        user : user ,
+        message : "successful"
+      })
+  } else {
+    return  res.status(404).json({
+        result : false , 
+        message : "no record has been found !"
+      })
+  }
+
+  }
+  catch (e) {
+    next(createError(e))
+  }
+};
+
+const getAllUsers = async (req, res, next) => {
+  try {
+    const allUsers = await User.find({}, {}, { lean: true });
+    return res.status(200).json({
+      result: true,
+      AllUsers: allUsers,
+    });
+  } catch (e) {
+    next(createError(e))
+  }
+  
 };
 module.exports = {
   addNewUser,
   updateUser,
   deleteUser,
   getUser,
-  getAllusers,
+  getAllUsers,
 };
