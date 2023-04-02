@@ -16,10 +16,10 @@ const userSchema = new mongoose.Schema(
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      refPath: "role",
+      refPath: "usertype",
       unique: true,
     },
-    role: {
+    usertype: {
       type: String,
       enum: ["Caregiver", "Patient", "Admin"],
     },
@@ -45,9 +45,8 @@ userSchema.pre("save", async function () {
 const schema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
-
   owner: Joi.objectId().required(),
-  role: Joi.string().valid("Caregiver", "Admin", "Patient"),
+  usertype: Joi.string().valid("Caregiver", "Admin", "Patient"),
 });
 
 userSchema.methods.validation = function (userObject) {

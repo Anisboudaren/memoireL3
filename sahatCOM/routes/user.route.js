@@ -6,6 +6,7 @@ const {authToken} = require('../utils/jwt')
 userRouter.get("/getUser" , userController.getUser)
 userRouter.delete("/deleteUser" , userController.deleteUser)
 userRouter.put("/updateUser", userController.updateUser) // when updating the model doesn't have to respect the schema anymore 
-userRouter.get("/getAll" , userController.getAllUsers)
+userRouter.get("/getAll" ,authToken , userController.getAllUsers)
+userRouter.get("/login" , userController.loginUser)
 
 module.exports = userRouter
