@@ -49,7 +49,7 @@ const schema = Joi.object({
   usertype: Joi.string().valid("Caregiver", "Admin", "Patient"),
 });
 
-userSchema.methods.validation = function (userObject) {
+userSchema.methods.validateUser = function (userObject) {
   schema.required();
   return schema.validate(userObject);
 };
@@ -57,7 +57,7 @@ userSchema.methods.validation = function (userObject) {
 //used while signIn decrypt
 userSchema.methods.comparePassword = async function (candidatePassword) {
   try {
-    console.log("----------------no password", this.password);
+    console.log(candidatePassword, this.password);
     // @ts-ignore
     const isMatch = await bcrypt.compare(candidatePassword, this.password);
     return isMatch;

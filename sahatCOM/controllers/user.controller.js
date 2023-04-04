@@ -16,7 +16,7 @@ const addNewUser = async (req, res, next) => {
 
   const newUser = new User(user);
 
-  const { error } = newUser.validation(user);
+  const { error } = newUser.validateUser(user);
 
   if (error) {
     return res.json({
@@ -41,18 +41,22 @@ const addNewUser = async (req, res, next) => {
         });
       }
     } catch (e) {
-      next(createError(e));
+     console.log(createError(e)); 
+      res.status(400).json({
+        message : "an error accrued while saving the user"
+      })
     }
   }
+  
 };
 
 const updateUser = async (req, res, next) => {
   try {
-    const user = await User.findById({ _id: req.body.id }, {}, { lean: true });
+    const user = await User.findById({ _id: req.params.id }, {}, { lean: true });
 
     if (user) {
       const willBeUpdated = await User.findByIdAndUpdate(
-        { _id: req.body.id },
+        { _id: req.params.id },
         req.body,
         { lean: true, new: true },
       );
@@ -81,7 +85,8 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
-    const user = await User.findOneAndDelete({ _id: req.body.id });
+    const user = await User.findOneAndDelete({ _id: req.params.id });
+    console.log(req.params.id);
     if (user) {
       return res.status(202).json({
         result: true,
@@ -100,7 +105,7 @@ const deleteUser = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.body.id);
+    const user = await User.findById(req.params.id);
     if (user) {
       req.user = user;
       return res.status(200).json({

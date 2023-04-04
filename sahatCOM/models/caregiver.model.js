@@ -80,7 +80,7 @@ const caregiverValidationSchema = Joi.object({
   Specialties : Joi.string()
 });
 
-caregiverSchema.methods.validation = function(caregiver) {
+caregiverSchema.methods.validateCaregiver = function(caregiver) {
   return caregiverValidationSchema.validate(caregiver, { abortEarly: false });
 };
 

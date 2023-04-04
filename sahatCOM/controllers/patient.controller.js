@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const Caregiver = require('../models/caregiver.model');
+const Patient = require('../models/patient.model');
 const userController = require('../controllers/user.controller');
 const _ = require('lodash');
 const { genToken } = require('../utils/jwt');
@@ -7,13 +7,13 @@ const User = require('../models/user.model');
 
 const getProfile = async (req, res, next) => {
   try {
-    const caregiver = await Caregiver.findById(req.user.owner);
+    const patient = await Patient.findById(req.user.owner);
     console.log(req.user.owner);
-    if (caregiver) {
-      req.caregiver = caregiver;
+    if (patient) {
+      req.patient = patient;
       return res.status(200).json({
         result: true,
-        caregiver: caregiver,
+        patient: patient,
         message: 'successful',
       });
     } else {
@@ -28,14 +28,14 @@ const getProfile = async (req, res, next) => {
 };
 const updateProfile = async (req, res, next) => {
   try {
-    const caregiver = await Caregiver.findById(
+    const patient = await Patient.findById(
       { _id: req.user.owner },
       {},
       { lean: true },
     );
 
-    if (caregiver) {
-      const willBeUpdated = await Caregiver.findByIdAndUpdate(
+    if (patient) {
+      const willBeUpdated = await Patient.findByIdAndUpdate(
         { _id: req.body.id },
         req.body,
         { lean: true, new: true },
@@ -44,12 +44,12 @@ const updateProfile = async (req, res, next) => {
       if (willBeUpdated) {
         return res.status(201).json({
           result: true,
-          message: 'caregiver updated.',
+          message: 'patient updated.',
         });
       } else {
         return res.status(400).json({
           result: true,
-          message: 'Something went wrong while updating caregiver.',
+          message: 'Something went wrong while updating patient.',
         });
       }
     } else {
@@ -62,21 +62,21 @@ const updateProfile = async (req, res, next) => {
     next(createError(e));
   }
 };
-const addNewCaregiver = async (req, res, next) => {
-  const caregiver = _.pick(req.body, [
+const addNewPatient = async (req, res, next) => {
+  const patient = _.pick(req.body, [
     'firstName',
     'lastName',
-    'phone',
-    'patients',
+    'dateOfBirth',
+    'gender',
     'address',
-    'visits',
-    'role',
-    'Specialties',
+    'phoneNumber',
+    'medicalHistory',
+    'insuranceInformation',
   ]);
 
-  const newCaregiver = new Caregiver(caregiver);
+  const newPatient = new Patient(patient);
 
-  const { error } = newCaregiver.validateCaregiver(caregiver);
+  const { error } = newPatient.validatePatient(patient);
 
   if (error) {
     return res.status(400).json({
@@ -85,30 +85,37 @@ const addNewCaregiver = async (req, res, next) => {
     });
   } else {
     try {
-      const result = await newCaregiver.save();
+      const result = await newPatient.save();
       console.log(result);
       if (result) {
         req.body.owner = result._id;
-        try {
-          await userController.addNewUser(req, res, next);
-          console.log("this is the user " + req.user);
-        } catch (error) {
-          const createdCG = await Caregiver.findByIdAndRemove(result._id);
-          return res.status(400).json({
-            result: false,
-            message: 'something went wrong while creating the user',
-          });
-        }
-  
+       
+            await userController.addNewUser(req, res, next)
+            .catch(async (err)=>{
+                console.error("this is a god damn error : " , err);
+                
+                    const createdCG = await Patient.findByIdAndRemove(result._id);
+                    return res.status(400).json({
+                      result: false,
+                      message: 'something went wrong while creating the user',
+                      deletedPatient : createdCG
+                    });
+                  
+            })
+            console.log(req.user);
+        
+        
+        // create the user after adding the patient profile info to the data base
+
         return res.status(201).json({
           result: true,
-          message: 'new caregiver has been added',
+          message: 'new patient has been added',
           user: req.user,
         });
       } else {
         res.status(400).json({
           result: false,
-          message: 'something went wrong while saving the caregiver',
+          message: 'something went wrong while saving the patient',
           user: req.user,
         });
       }
@@ -119,16 +126,16 @@ const addNewCaregiver = async (req, res, next) => {
 
   next();
 };
-const updateCaregiver = async (req, res, next) => {
+const updatePatient = async (req, res, next) => {
   try {
-    const caregiver = await Caregiver.findById(
+    const patient = await Patient.findById(
       { _id: req.body.id },
       {},
       { lean: true },
     );
 
-    if (caregiver) {
-      const willBeUpdated = await Caregiver.findByIdAndUpdate(
+    if (patient) {
+      const willBeUpdated = await Patient.findByIdAndUpdate(
         { _id: req.body.id },
         req.body,
         { lean: true, new: true },
@@ -137,12 +144,12 @@ const updateCaregiver = async (req, res, next) => {
       if (willBeUpdated) {
         return res.status(201).json({
           result: true,
-          message: 'caregiver updated.',
+          message: 'patient updated.',
         });
       } else {
         return res.status(400).json({
           result: true,
-          message: 'Something went wrong while updating caregiver.',
+          message: 'Something went wrong while updating patient.',
         });
       }
     } else {
@@ -155,13 +162,13 @@ const updateCaregiver = async (req, res, next) => {
     next(createError(e));
   }
 };
-const deleteCaregiver = async (req, res, next) => {
+const deletePatient = async (req, res, next) => {
   try {
-    const caregiver = await Caregiver.findOneAndDelete({ _id: req.params.id });
-    if (caregiver) {
+    const patient = await Patient.findOneAndDelete({ _id: req.params.id });
+    if (patient) {
       return res.status(202).json({
         result: true,
-        message: 'caregiver successfully deleted',
+        message: 'patient successfully deleted',
       });
     } else {
       return res.status(400).json({
@@ -173,14 +180,14 @@ const deleteCaregiver = async (req, res, next) => {
     next(createError(e));
   }
 };
-const getCaregiver = async (req, res, next) => {
+const getPatient = async (req, res, next) => {
   try {
-    const caregiver = await Caregiver.findById(req.params.id);
-    if (caregiver) {
-      req.caregiver = caregiver;
+    const patient = await Patient.findById(req.params.id);
+    if (patient) {
+      req.patient = patient;
       return res.status(200).json({
         result: true,
-        caregiver: caregiver,
+        patient: patient,
         message: 'successful',
       });
     } else {
@@ -195,20 +202,20 @@ const getCaregiver = async (req, res, next) => {
 };
 const getAll = async (req, res, next) => {
   try {
-    const allCaregivers = await Caregiver.find({}, {}, { lean: true });
+    const allPatients = await Patient.find({}, {}, { lean: true });
     return res.status(200).json({
       result: true,
-      AllCaregivers: allCaregivers,
+      AllPatients: allPatients,
     });
   } catch (e) {
     next(createError(e));
   }
 };
 module.exports = {
-  addNewCaregiver,
-  updateCaregiver,
-  deleteCaregiver,
-  getCaregiver,
+  addNewPatient,
+  updatePatient,
+  deletePatient,
+  getPatient,
   getAll,
   getProfile,
   updateProfile
