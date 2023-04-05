@@ -48,6 +48,7 @@ const patientSchema = new mongoose.Schema({
 });
 
   const schema = Joi.object({
+    _id : Joi.objectId().required(),
     firstName: Joi.string().required().min(1).max(255),
     lastName: Joi.string().required().min(1).max(255),
     dateOfBirth: Joi.date().required(),

@@ -4,6 +4,7 @@ const userController = require('../controllers/user.controller');
 const _ = require('lodash');
 const { genToken } = require('../utils/jwt');
 const User = require('../models/user.model');
+const { default: mongoose } = require('mongoose');
 
 const getProfile = async (req, res, next) => {
   try {
@@ -74,57 +75,56 @@ const addNewPatient = async (req, res, next) => {
     'insuranceInformation',
   ]);
 
+const objectId = new mongoose.Types.ObjectId()
+
+  patient._id = objectId 
+  
   const newPatient = new Patient(patient);
 
   const { error } = newPatient.validatePatient(patient);
 
   if (error) {
-    return res.status(400).json({
+     res.status(400).json({
       result: false,
       message: error,
     });
   } else {
     try {
-      const result = await newPatient.save();
-      console.log(result);
-      if (result) {
-        req.body.owner = result._id;
-       
-            await userController.addNewUser(req, res, next)
-            .catch(async (err)=>{
-                console.error("this is a god damn error : " , err);
+      console.log("we are in try");
+      req.body.owner = newPatient._id;
+      await userController.addNewUser(req, res)
+        if(req.newUser){
+                console.log("the user that has been created" , req.newUser);
+               const patientResult =  await newPatient.save()
+               if(patientResult) {
+               
+                  console.log("i am in then of save" , patientResult);
+                 return res.status(201).json({
+                    result: true,
+                    message: 'new patient has been added',
+                    user: req.newUser,
+                    patient : patient
+                  });
                 
-                    const createdCG = await Patient.findByIdAndRemove(result._id);
-                    return res.status(400).json({
+               }else {
+               
+                  console.log("i am in then of catch");
+                   return res.status(400).json({
                       result: false,
-                      message: 'something went wrong while creating the user',
-                      deletedPatient : createdCG
-                    });
+                      message: 'something went wrong while saving the patient',
+                      err : err 
+                    })
+                   
+               }
+                   
                   
-            })
-            console.log(req.user);
-        
-        
-        // create the user after adding the patient profile info to the data base
-
-        return res.status(201).json({
-          result: true,
-          message: 'new patient has been added',
-          user: req.user,
-        });
-      } else {
-        res.status(400).json({
-          result: false,
-          message: 'something went wrong while saving the patient',
-          user: req.user,
-        });
-      }
+         }
     } catch (e) {
       next(createError(e));
     }
   }
 
-  next();
+  
 };
 const updatePatient = async (req, res, next) => {
   try {

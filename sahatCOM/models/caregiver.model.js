@@ -70,6 +70,7 @@ const caregiverSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 const caregiverValidationSchema = Joi.object({
+  _id : Joi.objectId().required(),
   firstName: Joi.string().trim().min(2).max(50).required(),
   lastName: Joi.string().trim().min(2).max(50).required(),
   phone: Joi.string().trim().min(10).max(20).required(),

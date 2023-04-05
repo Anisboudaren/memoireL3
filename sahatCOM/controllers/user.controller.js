@@ -3,9 +3,9 @@ const User = require('../models/user.model');
 const _ = require('lodash');
 const { genToken } = require('../utils/jwt');
 
-const addNewUser = async (req, res, next) => {
+const addNewUser = async (req, res) => {
   const user = _.pick(req.body, ['email', 'password', 'owner', 'usertype']);
-  console.log(user);
+  
 
   if (!user.email || !user.password || !user.usertype) {
     return res.json({
@@ -27,13 +27,11 @@ const addNewUser = async (req, res, next) => {
     try {
       const result = await newUser.save();
       if (result) {
-        console.log(result);
-        req.user = {
+        return req.newUser = {
           result: true,
           message: 'new user has been added',
           token: genToken(result.toObject()),
         };
-        next();
       } else {
         return res.json({
           result: false,

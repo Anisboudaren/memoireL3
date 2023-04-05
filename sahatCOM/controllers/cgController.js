@@ -4,6 +4,7 @@ const userController = require('../controllers/user.controller');
 const _ = require('lodash');
 const { genToken } = require('../utils/jwt');
 const User = require('../models/user.model');
+const { default: mongoose } = require('mongoose');
 
 const getProfile = async (req, res, next) => {
   try {
@@ -74,51 +75,58 @@ const addNewCaregiver = async (req, res, next) => {
     'Specialties',
   ]);
 
+const objectId = new mongoose.Types.ObjectId()
+
+  caregiver._id = objectId 
+  
   const newCaregiver = new Caregiver(caregiver);
 
   const { error } = newCaregiver.validateCaregiver(caregiver);
 
   if (error) {
-    return res.status(400).json({
+     res.status(400).json({
       result: false,
       message: error,
     });
   } else {
     try {
-      const result = await newCaregiver.save();
-      console.log(result);
-      if (result) {
-        req.body.owner = result._id;
-        try {
-          await userController.addNewUser(req, res, next);
-          console.log("this is the user " + req.user);
-        } catch (error) {
-          const createdCG = await Caregiver.findByIdAndRemove(result._id);
-          return res.status(400).json({
-            result: false,
-            message: 'something went wrong while creating the user',
-          });
-        }
-  
-        return res.status(201).json({
-          result: true,
-          message: 'new caregiver has been added',
-          user: req.user,
-        });
-      } else {
-        res.status(400).json({
-          result: false,
-          message: 'something went wrong while saving the caregiver',
-          user: req.user,
-        });
-      }
+      console.log("we are in try");
+      req.body.owner = newCaregiver._id;
+      await userController.addNewUser(req, res)
+        if(req.newUser){
+                console.log("the user that has been created" , req.newUser);
+               const caregiverResult =  await newCaregiver.save()
+               if(caregiverResult) {
+               
+                  console.log("i am in then of save" , caregiverResult);
+                 return res.status(201).json({
+                    result: true,
+                    message: 'new caregiver has been added',
+                    user: req.newUser,
+                    caregiver : caregiver
+                  });
+                
+               }else {
+               
+                  console.log("i am in then of catch");
+                   return res.status(400).json({
+                      result: false,
+                      message: 'something went wrong while saving the caregiver',
+                      err : err 
+                    })
+                   
+               }
+                   
+                  
+         }
     } catch (e) {
       next(createError(e));
     }
   }
 
-  next();
-};
+  
+  }
+
 const updateCaregiver = async (req, res, next) => {
   try {
     const caregiver = await Caregiver.findById(
