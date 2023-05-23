@@ -1,0 +1,43 @@
+<div id="mysidebar" class="sidebar">
+	<ul class="sidebar-navlink">
+		<li>
+			<a href="#">
+				<i class="fa-solid fa-house"></i>
+				<span>Home</span>
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<i class="fa-solid fa-chart-simple"></i>
+				<span>Analytics</span>
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<i class="fa-solid fa-clock-rotate-left"></i>
+				<span>Activity</span>
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<i class="fa-solid fa-list-check"></i>
+				<span>Mangement</span>
+			</a>
+		</li>
+		<li>
+			<a href="#" onclick="redirectToPage('users')">
+				<i class="fa-solid fa-users"></i>
+				<span>Users</span>
+			</a>
+		</li>
+	</ul>
+	<button onclick="toggleMneu()" id="toogleBtn" class="colleps-btn">
+		<i class="fa-solid fa-angles-up"></i>
+	</button>
+</div>
+
+<script>
+	function redirectToPage(varr) {
+		location.href = 'admin/' + varr; // Replace with the desired URL
+	}
+</script>

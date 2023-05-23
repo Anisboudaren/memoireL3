@@ -124,16 +124,16 @@ const getUser = async (req, res, next) => {
 	}
 };
 
-const getAllUsers = async (req, res, next) => {
+const getAllUsers = async (req, res) => {
 	try {
 		const allUsers = await User.find({}, {}, { lean: true });
 		return res.status(200).json({
 			result: true,
 			user: req.user,
-			AllUsers: allUsers,
+			allUsers: allUsers,
 		});
 	} catch (e) {
-		next(createError(e));
+		console.log(createError(e));
 	}
 };
 
