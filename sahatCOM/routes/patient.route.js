@@ -12,19 +12,9 @@ patientRouter.get('/get/me', authToken, patientController.getProfile);
 patientRouter.put('/update/me', authToken, patientController.updateProfile);
 //for the rest
 patientRouter.post('/register', patientController.addNewPatient);
-patientRouter.put(
-	'/update',
-	authToken,
-	authRole(ROLES.ADMIN),
-	patientController.updatePatient,
-);
+patientRouter.put('/update', authToken, authRole(ROLES.ADMIN), patientController.updatePatient);
 patientRouter.get('/getAll', patientController.getAll);
-patientRouter.get('/get/:id', authToken, patientController.getPatient);
-patientRouter.delete(
-	'/delete/:id',
-	authToken,
-	authRole(ROLES.ADMIN),
-	patientController.deletePatient,
-);
+patientRouter.get('/get/:id', patientController.getPatient);
+patientRouter.delete('/delete/:id', patientController.deletePatient);
 
 module.exports = patientRouter;

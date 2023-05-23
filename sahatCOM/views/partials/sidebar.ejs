@@ -1,43 +1,47 @@
-<div id="mysidebar" class="sidebar">
-	<ul class="sidebar-navlink">
-		<li>
-			<a href="#">
-				<i class="fa-solid fa-house"></i>
-				<span>Home</span>
-			</a>
-		</li>
-		<li>
-			<a href="#">
-				<i class="fa-solid fa-chart-simple"></i>
-				<span>Analytics</span>
-			</a>
-		</li>
-		<li>
-			<a href="#">
-				<i class="fa-solid fa-clock-rotate-left"></i>
-				<span>Activity</span>
-			</a>
-		</li>
-		<li>
-			<a href="#">
-				<i class="fa-solid fa-list-check"></i>
-				<span>Mangement</span>
-			</a>
-		</li>
-		<li>
-			<a href="#" onclick="redirectToPage('users')">
-				<i class="fa-solid fa-users"></i>
-				<span>Users</span>
-			</a>
-		</li>
-	</ul>
-	<button onclick="toggleMneu()" id="toogleBtn" class="colleps-btn">
-		<i class="fa-solid fa-angles-up"></i>
-	</button>
-</div>
+<head>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
 
-<script>
-	function redirectToPage(varr) {
-		location.href = 'admin/' + varr; // Replace with the desired URL
-	}
-</script>
+		.sidebar {
+			width: 200px;
+			height: 100vh;
+			background-color: #f1f1f1;
+		}
+
+		.sidebar ul {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.sidebar li {
+			padding: 10px;
+			border-bottom: 1px solid #ddd;
+		}
+
+		.sidebar li a {
+			text-decoration: none;
+			color: #333;
+		}
+
+		.sidebar li:hover {
+			background-color: #ddd;
+		}
+	</style>
+</head>
+<body>
+	<div class="sidebar">
+		<ul>
+			<li><a href="#">Users</a></li>
+			<li><a href="#">Patients</a></li>
+			<li><a href="#">Doctors</a></li>
+			<li><a href="#">Apointments</a></li>
+			<li><a href="#">reports</a></li>
+			<li><a href="#">medical Records</a></li>
+			<li><a href="#">Absence</a></li>
+		</ul>
+	</div>
+</body>
