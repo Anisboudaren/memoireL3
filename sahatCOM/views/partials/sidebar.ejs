@@ -35,13 +35,18 @@
 <body>
 	<div class="sidebar">
 		<ul>
-			<li><a href="#">Users</a></li>
-			<li><a href="#">Patients</a></li>
-			<li><a href="#">Doctors</a></li>
-			<li><a href="#">Apointments</a></li>
-			<li><a href="#">reports</a></li>
-			<li><a href="#">medical Records</a></li>
-			<li><a href="#">Absence</a></li>
+			<li><a href="#" onclick="redirect('users')">Users</a></li>
+			<li><a href="#" onclick="redirect('patients')">Patients</a></li>
+			<li><a href="#" onclick="redirect('caregivers')">Caregivers</a></li>
+			<li><a href="#" onclick="redirect('apoints')">Apointments</a></li>
+			<li><a href="#" onclick="redirect('reports')">reports</a></li>
+			<li><a href="#" onclick="redirect('medicalRecords')">medical Records</a></li>
+			<li><a href="#" onclick="redirect('absences')">Absence</a></li>
 		</ul>
 	</div>
+	<script>
+		function redirect(page) {
+			document.location.href = '/admin/' + page;
+		}
+	</script>
 </body>

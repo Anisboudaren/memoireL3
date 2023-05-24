@@ -32,18 +32,10 @@ const getProfile = async (req, res, next) => {
 };
 const updateProfile = async (req, res, next) => {
 	try {
-		const patient = await Patient.findById(
-			{ _id: req.user.owner },
-			{},
-			{ lean: true },
-		);
+		const patient = await Patient.findById({ _id: req.user.owner }, {}, { lean: true });
 
 		if (patient) {
-			const willBeUpdated = await Patient.findByIdAndUpdate(
-				{ _id: req.body.id },
-				req.body,
-				{ lean: true, new: true },
-			);
+			const willBeUpdated = await Patient.findByIdAndUpdate({ _id: req.body.id }, req.body, { lean: true, new: true });
 
 			if (willBeUpdated) {
 				return res.status(201).json({
@@ -67,16 +59,7 @@ const updateProfile = async (req, res, next) => {
 	}
 };
 const addNewPatient = async (req, res, next) => {
-	const patient = _.pick(req.body, [
-		'firstName',
-		'lastName',
-		'dateOfBirth',
-		'gender',
-		'address',
-		'phoneNumber',
-		'medicalHistory',
-		'insuranceInformation',
-	]);
+	const patient = _.pick(req.body, ['firstName', 'lastName', 'dateOfBirth', 'gender', 'address', 'phoneNumber', 'medicalHistory']);
 
 	const objectId = new mongoose.Types.ObjectId();
 
@@ -123,19 +106,12 @@ const addNewPatient = async (req, res, next) => {
 	}
 };
 const updatePatient = async (req, res, next) => {
+	console.log(req.body);
 	try {
-		const patient = await Patient.findById(
-			{ _id: req.body.id },
-			{},
-			{ lean: true },
-		);
+		const patient = await Patient.findById({ _id: req.body.id }, {}, { lean: true });
 
 		if (patient) {
-			const willBeUpdated = await Patient.findByIdAndUpdate(
-				{ _id: req.body.id },
-				req.body,
-				{ lean: true, new: true },
-			);
+			const willBeUpdated = await Patient.findByIdAndUpdate({ _id: req.body.id }, req.body, { lean: true, new: true });
 
 			if (willBeUpdated) {
 				return res.status(201).json({
@@ -245,9 +221,7 @@ const addNewMedRec = async (req, res, next) => {
 			res.status(500).send('Error uploading PDF file');
 		});
 	} catch (error) {
-		res
-			.status(400)
-			.send('something went wrong while uploading pdf to the database');
+		res.status(400).send('something went wrong while uploading pdf to the database');
 	}
 };
 module.exports = {

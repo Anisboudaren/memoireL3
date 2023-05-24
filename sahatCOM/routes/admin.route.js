@@ -4,6 +4,8 @@ const User = require('../models/user.model');
 /* GET home page. */
 const userController = require('../controllers/user.controller');
 const Patient = require('../models/patient.model');
+const Caregiver = require('../models/caregiver.model');
+const Visit = require('../models/visit.model');
 
 adminRouter.get('/', async (req, res) => {
 	try {
@@ -37,7 +39,27 @@ adminRouter.get('/patients', async (req, res) => {
 		res.status(500).send('Internal Server Error');
 	}
 });
-adminRouter.get('/tables', (req, res) => {
-	res.render('pages/tables');
+adminRouter.get('/caregivers', async (req, res) => {
+	try {
+		const results = await Caregiver.find({}, {}, { lean: true });
+		console.log(results);
+		res.render('pages/caregivers', { users: results, focus: 4 });
+	} catch (error) {
+		console.error(error);
+		// Handle the error appropriately
+		res.status(500).send('Internal Server Error');
+	}
+});
+adminRouter.get('/apoints', async (req, res) => {
+	try {
+		const results = await Visit.find({}, {}, { lean: true }).populate(['patientId', 'caregiverId']);
+
+		console.log(results);
+		res.render('pages/apoints', { users: results, focus: 4 });
+	} catch (error) {
+		console.error(error);
+		// Handle the error appropriately
+		res.status(500).send('Internal Server Error');
+	}
 });
 module.exports = adminRouter;

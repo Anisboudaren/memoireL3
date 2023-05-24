@@ -5,7 +5,22 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>admin dashboard</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 		<style>
+			.green-icon {
+				color: green;
+				vertical-align: middle;
+			}
+
+			.red-icon {
+				color: red;
+				vertical-align: middle;
+			}
+
+			.grey-icon {
+				color: grey;
+				vertical-align: middle;
+			}
 			.container {
 				display: flex;
 				height: 200px;
@@ -54,6 +69,9 @@
 				cursor: pointer;
 				border-radius: 4px;
 			}
+			.delete-button {
+				background-color: rgb(209, 8, 8);
+			}
 
 			/* Edit User Modal */
 			#editUserModal {
@@ -74,10 +92,6 @@
 				padding: 20px;
 				border: 1px solid #888;
 				width: 50%;
-			}
-			.new-Button {
-				background-color: #1554dd;
-				margin-bottom: 30px;
 			}
 			.close {
 				color: #aaa;
@@ -151,10 +165,10 @@
 					<thead>
 						<tr>
 							<th>Index</th>
-							<th>Email</th>
-							<th>Last Modified</th>
-							<th>Created At</th>
-							<th>Role</th>
+							<th>Dcotor</th>
+							<th>Patient</th>
+							<th>Location</th>
+							<th>request state</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -162,16 +176,35 @@
 						<% users.forEach((user, index) => { %>
 						<tr>
 							<td><%= index + 1 %></td>
-							<td><%= user.email %></td>
-							<td><%= new Date(user.updatedAt).toLocaleDateString("en-GB", {day: "2-digit",month: "2-digit",year: "numeric"}) %></td>
-							<td><%= new Date(user.createdAt).toLocaleDateString("en-GB", {day: "2-digit",month: "2-digit",year: "numeric"}) %></td>
-							<td><%= user.usertype %></td>
+							<td><%= user.caregiverId.firstName +" "+ user.caregiverId.lastName %></td>
+							<td><%= user.patientId.firstName +" "+ user.patientId.lastName %></td>
+							<td><%= user.location %></td>
+
+							<% if (user.state == "pending") { %>
+							<td style="color: #aaa"><%= user.state %> <i class="material-icons grey-icon">schedule</i></td>
 							<td>
 								<div class="button-container">
-									<button class="edit-button button" data-id="<%= user._id %>">Edit</button>
-									<button class="delete-button button" data-id="<%= user._id %>">Delete</button>
+									<button class="edit-button button" data-id="<%= user._id %>">Confirm</button>
+									<button class="delete-button button" data-id="<%= user._id %>">Reject</button>
 								</div>
 							</td>
+							<% } else if (user.state == "rejected") { %>
+							<td style="color: #fd0303"><%= user.state %> <i class="material-icons red-icon">cancel</i></td>
+							<td>
+								<div class="button-container">
+									<button class="edit-button button" data-id="<%= user._id %>">Confirm</button>
+									<button class="delete-button button" disabled style="background-color: #888" data-id="<%= user._id %>">Reject</button>
+								</div>
+							</td>
+							<% } else { %>
+							<td><%= user.state %> <i class="material-icons green-icon">check_circle</i></td>
+							<td>
+								<div class="button-container">
+									<button class="edit-button button" disabled style="background-color: #888" data-id="<%= user._id %>">Confirm</button>
+									<button class="delete-button button" data-id="<%= user._id %>">Reject</button>
+								</div>
+							</td>
+							<% } %>
 						</tr>
 						<% }); %>
 					</tbody>
@@ -220,20 +253,26 @@
 				const userId = button.getAttribute('data-id');
 				// Perform DELETE request with the userId
 				// Replace the following code with your actual request implementation
-				fetch(`/api/user/delete/${userId}`, {
-					method: 'DELETE',
-					// Add other request options as needed
+				state = 'rejected';
+
+				data = {
+					state,
+				};
+				fetch(`/api/visit/update/${userId}`, {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
 				})
 					.then((response) => {
-						if (response.ok) {
-							// Reload the page after a successful DELETE request
-							console.log(userId + ' has been deleted');
-							location.reload();
-						}
+						// Handle the response as needed
+						if (response.status == 201) location.reload();
+						console.log('Patient updated successfully');
 					})
 					.catch((error) => {
 						// Handle the error as needed
-						console.log(error);
+						console.error('Error updating patient:', error);
 					});
 			});
 		});
@@ -251,41 +290,26 @@
 			button.addEventListener('click', () => {
 				const userId = button.getAttribute('data-id');
 				id = userId;
-				// Perform GET request to retrieve user data
-				// Replace the following code with your actual request implementation
-				fetch(`/api/user/get/${userId}`, {
-					method: 'GET',
-					// Add other request options as needed
+				state = 'confirmed';
+
+				data = {
+					state,
+				};
+				fetch(`/api/visit/update/${id}`, {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
 				})
 					.then((response) => {
-						if (response.ok) {
-							return response.json();
-						} else {
-							throw new Error('Failed to retrieve user data');
-						}
-					})
-					.then((userData) => {
-						// Pre-fill the form with user data
-						id = userData.user._id;
-						document.getElementById('email').value = userData.user.email;
-						document.getElementById('updatedAt').value = new Date(userData.user.updatedAt).toLocaleDateString('en-GB', {
-							day: '2-digit',
-							month: '2-digit',
-							year: 'numeric',
-						});
-						document.getElementById('createdAt').value = new Date(userData.user.createdAt).toLocaleDateString('en-GB', {
-							day: '2-digit',
-							month: '2-digit',
-							year: 'numeric',
-						});
-						document.getElementById('role').value = userData.user.usertype;
-
-						// Show the edit user modal
-						editUserModal.style.display = 'block';
+						// Handle the response as needed
+						if (response.status == 201) location.reload();
+						console.log('Patient updated successfully');
 					})
 					.catch((error) => {
 						// Handle the error as needed
-						console.log(error);
+						console.error('Error updating patient:', error);
 					});
 			});
 		});

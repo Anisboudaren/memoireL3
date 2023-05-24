@@ -67,10 +67,20 @@
 				overflow: auto;
 				background-color: rgba(0, 0, 0, 0.4);
 			}
-
+			#newPatientModal {
+				display: none;
+				position: fixed;
+				z-index: 1;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				overflow: auto;
+				background-color: rgba(0, 0, 0, 0.4);
+			}
 			.modal-content {
 				background-color: #fefefe;
-				margin: 15% auto;
+				margin: 5% auto;
 				padding: 20px;
 				border: 1px solid #888;
 				width: 50%;
@@ -90,169 +100,7 @@
 				text-decoration: none;
 				cursor: pointer;
 			}
-		</style>
-	</head>
-	<body>
-		<div class="container">
-			<div class="sidebar"><%- include('../partials/sidebar.ejs') %></div>
-			<div class="content">
-				<table>
-					<thead>
-						<tr>
-							<th>Index</th>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Gender</th>
-							<th>Date of Birth</th>
-							<th>Address</th>
-							<th>Phone Number</th>
-							<th>Medical History</th>
-							<th>Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						<% patients.forEach((patient, index) => { %>
-						<tr>
-							<td><%= index + 1 %></td>
-							<td><%= patient.firstName %></td>
-							<td><%= patient.lastName %></td>
-							<td><%= patient.gender %></td>
-							<td><%= new Date(patient.dateOfBirth).toLocaleDateString("en-GB", {day: "2-digit", month: "2-digit", year: "numeric"}) %></td>
-							<td><%= patient.address %></td>
-							<td><%= patient.phoneNumber %></td>
-							<td><a href="#">download</a></td>
-							<td>
-								<div class="button-container">
-									<button class="edit-button button" data-id="<%= patient._id %>">Edit</button>
-									<button class="delete-button button" data-id="<%= patient._id %>">Delete</button>
-								</div>
-							</td>
-						</tr>
-						<% }); %>
-					</tbody>
-				</table>
-
-				<div id="editPatientModal" class="modal">
-					<div class="modal-content">
-						<span class="close">&times;</span>
-						<h2>Edit Patient</h2>
-						<form id="editPatientForm">
-							<div>
-								<label for="firstName">First Name:</label>
-								<input type="text" id="firstName" name="firstName" />
-							</div>
-							<div>
-								<label for="lastName">Last Name:</label>
-								<input type="text" id="lastName" name="lastName" />
-							</div>
-							<div>
-								<label for="gender">Gender:</label>
-								<input type="text" id="gender" name="gender" />
-							</div>
-							<div>
-								<label for="dateOfBirth">Date of Birth:</label>
-								<input type="text" id="dateOfBirth" name="dateOfBirth" />
-							</div>
-							<div>
-								<label for="address">Address:</label>
-								<input type="text" id="address" name="address" />
-							</div>
-							<div>
-								<label for="phoneNumber">Phone Number:</label>
-								<input type="text" id="phoneNumber" name="phoneNumber" />
-							</div>
-							<div>
-								<label for="medicalHistory">Medical History:</label>
-								<textarea id="medicalHistory" name="medicalHistory"></textarea>
-							</div>
-							<button type="submit">Save</button>
-						</form>
-					</div>
-				</div>
-
-				<script>
-					// Edit Patient Modal
-					const editPatientModal = document.getElementById('editPatientModal');
-					const editPatientForm = document.getElementById('editPatientForm');
-					const closeBtn = editPatientModal.querySelector('.close');
-					const saveBtn = document.getElementById('saveEdit');
-					// Event listener for edit button
-					const editButtons = document.querySelectorAll('.edit-button');
-					editButtons.forEach((button) => {
-						button.addEventListener('click', () => {
-							const patientId = button.getAttribute('data-id');
-
-							// Perform GET request to retrieve patient data
-							// Replace the following code with your actual request implementation
-							fetch(`/api/patient/get/${patientId}`, {
-								method: 'GET',
-								// Add other request options as needed
-							})
-								.then((response) => {
-									if (response.ok) {
-										return response.json();
-									} else {
-										throw new Error('Failed to retrieve patient data');
-									}
-								})
-								.then((patientData) => {
-									// Pre-fill the form with patient data
-									document.getElementById('firstName').value = patientData.patient.firstName;
-									document.getElementById('lastName').value = patientData.patient.lastName;
-									document.getElementById('gender').value = patientData.patient.gender;
-									document.getElementById('dateOfBirth').value = new Date(patientData.patient.dateOfBirth).toLocaleDateString('en-GB', {
-										day: '2-digit',
-										month: '2-digit',
-										year: 'numeric',
-									});
-									document.getElementById('address').value = patientData.patient.address;
-									document.getElementById('phoneNumber').value = patientData.patient.phoneNumber;
-									document.getElementById('medicalHistory').value = patientData.patient.medicalHistory;
-
-									// Show the edit patient modal
-									editPatientModal.style.display = 'block';
-								})
-								.catch((error) => {
-									// Handle the error as needed
-									console.log(error);
-								});
-						});
-					});
-
-					// Close the modal when the close button is clicked
-					closeBtn.addEventListener('click', () => {
-						editPatientModal.style.display = 'none';
-					});
-
-					// Event listener for delete button
-					const deleteButtons = document.querySelectorAll('.delete-button');
-					deleteButtons.forEach((button) => {
-						button.addEventListener('click', () => {
-							const patientId = button.getAttribute('data-id');
-							// Perform DELETE request with the patientId
-							// Replace the following code with your actual request implementation
-							fetch(`/api/patient/delete/${patientId}`, {
-								method: 'DELETE',
-								// Add other request options as needed
-							})
-								.then((response) => {
-									if (response.ok) {
-										// Reload the page after a successful DELETE request
-										console.log(patientId + ' has been deleted');
-										location.reload();
-									}
-								})
-								.catch((error) => {
-									// Handle the error as needed
-									console.log(error);
-								});
-						});
-					});
-				</script>
-			</div>
-		</div>
-
-		<style>
+			/* form styling  */
 			.fromContainer {
 				position: fixed;
 				width: 400px;
@@ -297,6 +145,320 @@
 				cursor: pointer;
 				border-radius: 4px;
 			}
+			.new-button {
+				background-color: #1554dd;
+				margin-bottom: 15px;
+			}
 		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="sidebar"><%- include('../partials/sidebar.ejs') %></div>
+			<div class="content">
+				<!-- table -->
+				<button class="new-button button">new</button>
+				<table>
+					<thead>
+						<tr>
+							<th>Index</th>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Gender</th>
+							<th>Date of Birth</th>
+							<th>Address</th>
+							<th>Phone Number</th>
+							<th>Medical History</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% patients.forEach((patient, index) => { %>
+						<tr>
+							<td><%= index + 1 %></td>
+							<td><%= patient.firstName %></td>
+							<td><%= patient.lastName %></td>
+							<td><%= patient.gender %></td>
+							<td><%= new Date(patient.dateOfBirth).toLocaleDateString("en-GB", {day: "2-digit", month: "2-digit", year: "numeric"}) %></td>
+							<td><%= patient.address %></td>
+							<td><%= patient.phoneNumber %></td>
+							<td><a href="#">download</a></td>
+							<td>
+								<div class="button-container">
+									<button class="edit-button button" data-id="<%= patient._id %>">Edit</button>
+									<button class="delete-button button" data-id="<%= patient._id %>">Delete</button>
+								</div>
+							</td>
+						</tr>
+						<% }); %>
+					</tbody>
+				</table>
+				<!-- end table -->
+
+				<!-- start form -->
+				<div id="editPatientModal" class="modal">
+					<div class="modal-content">
+						<span class="close">&times;</span>
+						<h2>Edit Patient</h2>
+						<form id="editPatientForm" method="PUT">
+							<div>
+								<label for="firstName">First Name:</label>
+								<input type="text" id="firstName" name="firstName" />
+							</div>
+							<div>
+								<label for="lastName">Last Name:</label>
+								<input type="text" id="lastName" name="lastName" />
+							</div>
+							<div>
+								<label for="gender">Gender:</label>
+								<input type="text" id="gender" name="gender" />
+							</div>
+							<div>
+								<label for="dateOfBirth">Date of Birth:</label>
+								<input type="text" id="dateOfBirth" name="dateOfBirth" />
+							</div>
+							<div>
+								<label for="address">Address:</label>
+								<input type="text" id="address" name="address" />
+							</div>
+							<div>
+								<label for="phoneNumber">Phone Number:</label>
+								<input type="text" id="phoneNumber" name="phoneNumber" />
+							</div>
+							<div>
+								<label for="medicalHistory">Medical History:</label>
+								<textarea id="medicalHistory" name="medicalHistory"></textarea>
+							</div>
+							<button type="submit">Save</button>
+						</form>
+					</div>
+				</div>
+				<!-- end form -->
+				<!-- new patient form  -->
+				<div id="newPatientModal" class="modal">
+					<div class="modal-content">
+						<span class="close">&times;</span>
+						<h2>Edit Patient</h2>
+						<form id="newPatientForm" method="post">
+							<div>
+								<label for="email">Email :</label>
+								<input type="text" id="newemail" name="email" />
+							</div>
+							<div>
+								<label for="password">password:</label>
+								<input type="text" id="newpassword" name="password" />
+							</div>
+							<div>
+								<label for="firstName">First Name:</label>
+								<input type="text" id="newfirstName" name="firstName" />
+							</div>
+							<div>
+								<label for="lastName">Last Name:</label>
+								<input type="text" id="newlastName" name="lastName" />
+							</div>
+							<div>
+								<label for="gender">Gender:</label>
+								<input type="text" id="newgender" name="gender" />
+							</div>
+							<div>
+								<label for="dateOfBirth">Date of Birth:</label>
+								<input type="text" id="newdateOfBirth" name="dateOfBirth" />
+							</div>
+							<div>
+								<label for="address">Address:</label>
+								<input type="text" id="newaddress" name="address" />
+							</div>
+							<div>
+								<label for="phoneNumber">Phone Number:</label>
+								<input type="text" id="newphoneNumber" name="phoneNumber" />
+							</div>
+							<div>
+								<label for="medicalHistory">Medical History:</label>
+								<textarea id="newmedicalHistory" name="medicalHistory"></textarea>
+							</div>
+							<button id="new" type="submit">create</button>
+						</form>
+					</div>
+				</div>
+				<!-- end new patient form -->
+			</div>
+		</div>
+
+		<!-- the whole script -->
+		<script>
+			// Edit Patient Modal
+			var id;
+			const editPatientModal = document.getElementById('editPatientModal');
+			const editPatientForm = document.getElementById('editPatientForm');
+			const closeBtn = editPatientModal.querySelector('.close');
+			const saveBtn = document.getElementById('saveEdit');
+			// Event listener for edit button
+			const editButtons = document.querySelectorAll('.edit-button');
+			editButtons.forEach((button) => {
+				button.addEventListener('click', () => {
+					const patientId = button.getAttribute('data-id');
+
+					// Perform GET request to retrieve patient data
+					// Replace the following code with your actual request implementation
+					fetch(`/api/patient/get/${patientId}`, {
+						method: 'GET',
+						// Add other request options as needed
+					})
+						.then((response) => {
+							if (response.ok) {
+								return response.json();
+							} else {
+								throw new Error('Failed to retrieve patient data');
+							}
+						})
+						.then((patientData) => {
+							// Pre-fill the form with patient data
+							id = patientData.patient._id;
+							document.getElementById('firstName').value = patientData.patient.firstName;
+							document.getElementById('lastName').value = patientData.patient.lastName;
+							document.getElementById('gender').value = patientData.patient.gender;
+							document.getElementById('dateOfBirth').value = new Date(patientData.patient.dateOfBirth).toLocaleDateString('en-GB', {
+								day: '2-digit',
+								month: '2-digit',
+								year: 'numeric',
+							});
+							document.getElementById('address').value = patientData.patient.address;
+							document.getElementById('phoneNumber').value = patientData.patient.phoneNumber;
+							document.getElementById('medicalHistory').value = patientData.patient.medicalHistory;
+
+							// Show the edit patient modal
+							editPatientModal.style.display = 'block';
+						})
+						.catch((error) => {
+							// Handle the error as needed
+							console.log(error);
+						});
+				});
+			});
+
+			// Close the modal when the close button is clicked
+			closeBtn.addEventListener('click', () => {
+				editPatientModal.style.display = 'none';
+			});
+
+			// Event listener for delete button
+			const deleteButtons = document.querySelectorAll('.delete-button');
+			deleteButtons.forEach((button) => {
+				button.addEventListener('click', () => {
+					const patientId = button.getAttribute('data-id');
+					// Perform DELETE request with the patientId
+					// Replace the following code with your actual request implementation
+					fetch(`/api/patient/delete/${patientId}`, {
+						method: 'DELETE',
+						// Add other request options as needed
+					})
+						.then((response) => {
+							if (response.ok) {
+								// Reload the page after a successful DELETE request
+								console.log(patientId + ' has been deleted');
+								location.reload();
+							}
+						})
+						.catch((error) => {
+							// Handle the error as needed
+							console.log(error);
+						});
+				});
+			});
+
+			const form = document.getElementById('editPatientForm');
+
+			form.addEventListener('submit', (e) => {
+				e.preventDefault();
+
+				const firstName = document.getElementById('firstName').value;
+				const lastName = document.getElementById('lastName').value;
+				const gender = document.getElementById('gender').value;
+				const dateOfBirth = new Date(document.getElementById('dateOfBirth').value);
+				const address = document.getElementById('address').value;
+				const puhoneNumber = document.getElementById('phoneNumber').value;
+				const medicalHistory = document.getElementById('medicalHistory').value;
+
+				const data = {
+					id,
+					firstName,
+					lastName,
+					gender,
+					dateOfBirth,
+					address,
+					puhoneNumber,
+					medicalHistory,
+				};
+
+				fetch('/api/patient/update', {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				})
+					.then((response) => {
+						// Handle the response as needed
+						if (response.status == 201) location.reload();
+						console.log('Patient updated successfully');
+					})
+					.catch((error) => {
+						// Handle the error as needed
+						console.error('Error updating patient:', error);
+					});
+			});
+
+			// for the new form
+			const newButtons = document.querySelectorAll('.new-button');
+
+			newButtons[0].addEventListener('click', () => {
+				newPatientModal.style.display = 'block';
+			});
+			// the new form
+			const newform = document.getElementById('newPatientForm');
+
+			newform.addEventListener('submit', (e) => {
+				e.preventDefault();
+				const email = document.getElementById('newemail').value;
+				const password = document.getElementById('newpassword').value;
+				const firstName = document.getElementById('newfirstName').value;
+				const lastName = document.getElementById('newlastName').value;
+				const gender = document.getElementById('newgender').value;
+				const dateOfBirth = new Date(document.getElementById('newdateOfBirth').value);
+				const address = document.getElementById('newaddress').value;
+				const phoneNumber = document.getElementById('newphoneNumber').value;
+				const medicalHistory = document.getElementById('newmedicalHistory').value;
+
+				const data = {
+					email,
+					password,
+					firstName,
+					lastName,
+					gender,
+					dateOfBirth,
+					address,
+					phoneNumber,
+					medicalHistory,
+				};
+				console.log(phoneNumber);
+				fetch('/api/patient/register', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				})
+					.then((response) => {
+						// Handle the response as needed
+						if (response.status === 201) {
+							location.reload();
+							console.log('Patient registered successfully');
+						}
+					})
+					.catch((error) => {
+						// Handle the error as needed
+						console.error('Error registering patient:', error);
+					});
+			});
+		</script>
 	</body>
 </html>

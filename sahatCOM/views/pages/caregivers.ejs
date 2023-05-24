@@ -67,7 +67,17 @@
 				overflow: auto;
 				background-color: rgba(0, 0, 0, 0.4);
 			}
-
+			#newPatientModal {
+				display: none;
+				position: fixed;
+				z-index: 1;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				overflow: auto;
+				background-color: rgba(0, 0, 0, 0.4);
+			}
 			.modal-content {
 				background-color: #fefefe;
 				margin: 5% auto;
@@ -75,10 +85,7 @@
 				border: 1px solid #888;
 				width: 50%;
 			}
-			.new-Button {
-				background-color: #1554dd;
-				margin-bottom: 30px;
-			}
+
 			.close {
 				color: #aaa;
 				float: right;
@@ -138,23 +145,28 @@
 				cursor: pointer;
 				border-radius: 4px;
 			}
+			.new-button {
+				background-color: #1554dd;
+				margin-bottom: 15px;
+			}
 		</style>
 	</head>
 	<body>
 		<div class="container">
 			<div class="sidebar"><%- include('../partials/sidebar.ejs') %></div>
-
 			<div class="content">
 				<!-- table -->
-				<!-- <button class="new-button button">new</button> -->
+				<button class="new-button button">new</button>
 				<table>
 					<thead>
 						<tr>
 							<th>Index</th>
-							<th>Email</th>
-							<th>Last Modified</th>
-							<th>Created At</th>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Phone</th>
+							<th>Address</th>
 							<th>Role</th>
+							<th>Specialties</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -162,10 +174,12 @@
 						<% users.forEach((user, index) => { %>
 						<tr>
 							<td><%= index + 1 %></td>
-							<td><%= user.email %></td>
-							<td><%= new Date(user.updatedAt).toLocaleDateString("en-GB", {day: "2-digit",month: "2-digit",year: "numeric"}) %></td>
-							<td><%= new Date(user.createdAt).toLocaleDateString("en-GB", {day: "2-digit",month: "2-digit",year: "numeric"}) %></td>
-							<td><%= user.usertype %></td>
+							<td><%= user.firstName %></td>
+							<td><%= user.lastName %></td>
+							<td><%= user.phone %></td>
+							<td><%= user.address %></td>
+							<td><%= user.role %></td>
+							<td><%= user.Specialties %></td>
 							<td>
 								<div class="button-container">
 									<button class="edit-button button" data-id="<%= user._id %>">Edit</button>
@@ -176,6 +190,7 @@
 						<% }); %>
 					</tbody>
 				</table>
+
 				<!-- end table -->
 				<!-- start form  -->
 				<div id="editUserModal" class="modal">
@@ -184,20 +199,28 @@
 						<h2>Edit User</h2>
 						<form id="editUserForm" method="PUT">
 							<div>
-								<label for="email">Email:</label>
-								<input type="email" id="email" name="email" />
+								<label for="firstName">First Name:</label>
+								<input type="text" id="firstName" name="firstName" />
 							</div>
 							<div>
-								<label for="updatedAt">Last Modified:</label>
-								<input type="text" id="updatedAt" name="updatedAt" readonly />
+								<label for="lastName">Last Name:</label>
+								<input type="text" id="lastName" name="lastName" />
 							</div>
 							<div>
-								<label for="createdAt">Created At:</label>
-								<input type="text" id="createdAt" name="createdAt" readonly />
+								<label for="phone">Phone:</label>
+								<input type="text" id="phone" name="phone" />
+							</div>
+							<div>
+								<label for="address">Address:</label>
+								<input type="text" id="address" name="address" />
 							</div>
 							<div>
 								<label for="role">Role:</label>
 								<input type="text" id="role" name="role" />
+							</div>
+							<div>
+								<label for="Specialties">Specialties:</label>
+								<input type="text" id="Specialties" name="Specialties" />
 							</div>
 							<button type="submit">Save</button>
 						</form>
@@ -205,9 +228,50 @@
 				</div>
 
 				<!-- end form -->
-				<!-- new form -->
+				<!-- new caregiver form  -->
+				<div id="newPatientModal" class="modal">
+					<div class="modal-content">
+						<span class="close">&times;</span>
+						<h2>new Caregiver</h2>
+						<form id="newPatientForm" method="post">
+							<div>
+								<label for="email">Email :</label>
+								<input type="text" id="newemail" name="email" />
+							</div>
+							<div>
+								<label for="password">password:</label>
+								<input type="text" id="newpassword" name="password" />
+							</div>
+							<div>
+								<label for="firstName">First Name:</label>
+								<input type="text" id="newfirstName" name="firstName" />
+							</div>
+							<div>
+								<label for="lastName">Last Name:</label>
+								<input type="text" id="newlastName" name="lastName" />
+							</div>
+							<div>
+								<label for="phoneNumber">Phone Number:</label>
+								<input type="text" id="newphoneNumber" name="phoneNumber" />
+							</div>
+							<div>
+								<label for="address">Address:</label>
+								<input type="text" id="newaddress" name="address" />
+							</div>
+							<div>
+								<label for="role">role:</label>
+								<input type="text" id="newrole" name="role" />
+							</div>
+							<div>
+								<label for="Specialties">Specialties:</label>
+								<input type="text" id="newSpecialties" name="Specialties" />
+							</div>
 
-				<!-- end new form -->
+							<button id="new" type="submit">create</button>
+						</form>
+					</div>
+				</div>
+				<!-- end new caregiver form -->
 			</div>
 		</div>
 	</body>
@@ -220,7 +284,7 @@
 				const userId = button.getAttribute('data-id');
 				// Perform DELETE request with the userId
 				// Replace the following code with your actual request implementation
-				fetch(`/api/user/delete/${userId}`, {
+				fetch(`/api/caregiver/delete/${userId}`, {
 					method: 'DELETE',
 					// Add other request options as needed
 				})
@@ -253,7 +317,7 @@
 				id = userId;
 				// Perform GET request to retrieve user data
 				// Replace the following code with your actual request implementation
-				fetch(`/api/user/get/${userId}`, {
+				fetch(`/api/caregiver/get/${userId}`, {
 					method: 'GET',
 					// Add other request options as needed
 				})
@@ -266,19 +330,13 @@
 					})
 					.then((userData) => {
 						// Pre-fill the form with user data
-						id = userData.user._id;
-						document.getElementById('email').value = userData.user.email;
-						document.getElementById('updatedAt').value = new Date(userData.user.updatedAt).toLocaleDateString('en-GB', {
-							day: '2-digit',
-							month: '2-digit',
-							year: 'numeric',
-						});
-						document.getElementById('createdAt').value = new Date(userData.user.createdAt).toLocaleDateString('en-GB', {
-							day: '2-digit',
-							month: '2-digit',
-							year: 'numeric',
-						});
-						document.getElementById('role').value = userData.user.usertype;
+
+						document.getElementById('firstName').value = userData.caregiver.firstName;
+						document.getElementById('lastName').value = userData.caregiver.lastName;
+						document.getElementById('phone').value = userData.caregiver.phone;
+						document.getElementById('address').value = userData.caregiver.address;
+						document.getElementById('role').value = userData.caregiver.role;
+						document.getElementById('Specialties').value = userData.caregiver.Specialties;
 
 						// Show the edit user modal
 						editUserModal.style.display = 'block';
@@ -290,13 +348,6 @@
 			});
 		});
 
-		const newButton = document.querySelectorAll('.new-button');
-		newButton.forEach((button) => {
-			button.addEventListener('click', () => {
-				editUserModal.style.display = 'block';
-			});
-		});
-
 		// Close the modal when the close button is clicked
 		closeBtn.addEventListener('click', () => {
 			editUserModal.style.display = 'none';
@@ -305,20 +356,24 @@
 		editUserForm.addEventListener('submit', (e) => {
 			e.preventDefault();
 
-			const email = document.getElementById('email').value;
-			const updatedAt = new Date(document.getElementById('updatedAt').value);
-			const createdAt = new Date(document.getElementById('createdAt').value);
+			const firstName = document.getElementById('firstName').value;
+			const lastName = document.getElementById('lastName').value;
 			const role = document.getElementById('role').value;
+			const Specialties = document.getElementById('Specialties').value;
+			const address = document.getElementById('address').value;
+			const phone = document.getElementById('phone').value;
 
 			const data = {
 				id,
-				email,
-				updatedAt,
-				createdAt,
+				firstName,
+				lastName,
+				address,
+				phone,
 				role,
+				Specialties,
 			};
 
-			fetch(`/api/user/update/${id}`, {
+			fetch(`/api/caregiver/update`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
@@ -327,12 +382,65 @@
 			})
 				.then((response) => {
 					// Handle the response as needed
+					console.log(response);
 					if (response.status == 201) location.reload();
 					console.log('Patient updated successfully');
 				})
 				.catch((error) => {
 					// Handle the error as needed
 					console.error('Error updating patient:', error);
+				});
+		});
+
+		// the new form
+		const newButtons = document.querySelectorAll('.new-button');
+
+		newButtons[0].addEventListener('click', () => {
+			newPatientModal.style.display = 'block';
+		});
+		// the new form
+		const newform = document.getElementById('newPatientForm');
+
+		newform.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const email = document.getElementById('newemail').value;
+			const password = document.getElementById('newpassword').value;
+			const firstName = document.getElementById('newfirstName').value;
+			const lastName = document.getElementById('newlastName').value;
+			const role = document.getElementById('newrole').value;
+			const Specialties = document.getElementById('newSpecialties').value;
+			const address = document.getElementById('newaddress').value;
+			const phone = document.getElementById('newphoneNumber').value;
+
+			const data = {
+				email,
+				password,
+				firstName,
+				lastName,
+				address,
+				phone,
+				role,
+				Specialties,
+			};
+			console.log(data);
+			fetch('/api/caregiver/add', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(data),
+			})
+				.then((response) => {
+					// Handle the response as needed
+					console.log(response);
+					if (response.status === 201) {
+						location.reload();
+						console.log('Patient registered successfully');
+					}
+				})
+				.catch((error) => {
+					// Handle the error as needed
+					console.error('Error registering patient:', error);
 				});
 		});
 	</script>
