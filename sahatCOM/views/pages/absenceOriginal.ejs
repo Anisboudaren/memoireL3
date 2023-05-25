@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>admin dashboard</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+		<style>
+			.green-icon {
+				color: green;
+				vertical-align: middle;
+			}
+
+			.red-icon {
+				color: red;
+				vertical-align: middle;
+			}
+
+			.grey-icon {
+				color: grey;
+				vertical-align: middle;
+			}
+			.container {
+				display: flex;
+				height: 200px;
+			}
+
+			.sidebar {
+				width: 200px;
+				background-color: #f1f1f1;
+			}
+
+			.content {
+				flex-grow: 1;
+				background-color: #ddd;
+				height: 100vh;
+				padding: 30px;
+			}
+
+			table {
+				border-collapse: collapse;
+				width: 100%;
+			}
+
+			th,
+			td {
+				border: 1px solid black;
+				padding: 8px;
+				text-align: left;
+			}
+
+			tr:nth-child(even) {
+				background-color: #f2f2f2;
+			}
+
+			.button-container {
+				display: flex;
+				justify-content: center;
+				margin-top: 10px;
+			}
+
+			.button {
+				margin: 0 5px;
+				padding: 5px 10px;
+				background-color: #4caf50;
+				color: white;
+				border: none;
+				cursor: pointer;
+				border-radius: 4px;
+			}
+			.delete-button {
+				background-color: rgb(209, 8, 8);
+			}
+
+			/* Edit User Modal */
+			#editUserModal {
+				display: none;
+				position: fixed;
+				z-index: 1;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				overflow: auto;
+				background-color: rgba(0, 0, 0, 0.4);
+			}
+
+			.modal-content {
+				background-color: #fefefe;
+				margin: 5% auto;
+				padding: 20px;
+				border: 1px solid #888;
+				width: 50%;
+			}
+			.close {
+				color: #aaa;
+				float: right;
+				font-size: 28px;
+				font-weight: bold;
+				cursor: pointer;
+			}
+
+			.close:hover,
+			.close:focus {
+				color: black;
+				text-decoration: none;
+				cursor: pointer;
+			}
+			/* form styling  */
+			.fromContainer {
+				position: fixed;
+				width: 400px;
+				margin: 0 auto;
+				padding: 20px;
+				background-color: #949494a1;
+			}
+
+			h2 {
+				text-align: center;
+			}
+
+			form {
+				display: flex;
+				flex-direction: column;
+			}
+
+			label {
+				font-weight: bold;
+				margin-bottom: 5px;
+			}
+
+			input[type='text'],
+			input[type='email'],
+			textarea {
+				padding: 8px;
+				margin-bottom: 10px;
+				border-radius: 4px;
+				border: 1px solid #ccc;
+			}
+
+			textarea {
+				resize: vertical;
+				height: 80px;
+			}
+
+			button[type='submit'] {
+				padding: 10px 20px;
+				background-color: #4caf50;
+				color: white;
+				border: none;
+				cursor: pointer;
+				border-radius: 4px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="sidebar"><%- include('../partials/sidebar.ejs') %></div>
+
+			<div class="content">
+				<!-- table -->
+				<!-- <button class="new-button button">new</button> -->
+				<table>
+					<thead>
+						<tr>
+							<th>Index</th>
+							<th>Dcotor's ID</th>
+							<th>Dcotor</th>
+							<th>Number of Absences</th>
+							<th>The Reason</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% users.forEach((user, index) => { %>
+						<tr>
+							<td><%= index + 1 %></td>
+							<td><%= user.caregiverId._id %></td>
+							<td><%= user.caregiverId.firstName +" "+ user.caregiverId.lastName %></td>
+							<td><%= user.numberOfAbsences %></td>
+							<td><%= user.reason %></td>
+						</tr>
+						<% }); %>
+					</tbody>
+				</table>
+				<!-- end table -->
+				<!-- start form  -->
+				<div id="editUserModal" class="modal">
+					<div class="modal-content">
+						<span class="close">&times;</span>
+						<h2>Edit User</h2>
+						<form id="editUserForm" method="PUT">
+							<div>
+								<label for="email">Email:</label>
+								<input type="email" id="email" name="email" />
+							</div>
+							<div>
+								<label for="updatedAt">Last Modified:</label>
+								<input type="text" id="updatedAt" name="updatedAt" readonly />
+							</div>
+							<div>
+								<label for="createdAt">Created At:</label>
+								<input type="text" id="createdAt" name="createdAt" readonly />
+							</div>
+							<div>
+								<label for="role">Role:</label>
+								<input type="text" id="role" name="role" />
+							</div>
+							<button type="submit">Save</button>
+						</form>
+					</div>
+				</div>
+
+				<!-- end form -->
+				<!-- new form -->
+
+				<!-- end new form -->
+			</div>
+		</div>
+	</body>
+	<!-- whole script -->
+	<script>
+		// Event listener for delete button
+		const deleteButtons = document.querySelectorAll('.delete-button');
+		deleteButtons.forEach((button) => {
+			button.addEventListener('click', () => {
+				const userId = button.getAttribute('data-id');
+				// Perform DELETE request with the userId
+				// Replace the following code with your actual request implementation
+				state = 'rejected';
+
+				data = {
+					state,
+				};
+				fetch(`/api/visit/update/${userId}`, {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				})
+					.then((response) => {
+						// Handle the response as needed
+						if (response.status == 201) location.reload();
+						console.log('Patient updated successfully');
+					})
+					.catch((error) => {
+						// Handle the error as needed
+						console.error('Error updating patient:', error);
+					});
+			});
+		});
+
+		// for the form and model
+		var id;
+		const editUserModal = document.getElementById('editUserModal');
+		const editUserForm = document.getElementById('editUserForm');
+		const closeBtn = editUserModal.querySelector('.close');
+		const saveBtn = editUserModal.querySelector('button[type="submit"]');
+
+		// Event listener for edit button
+		const editButtons = document.querySelectorAll('.edit-button');
+		editButtons.forEach((button) => {
+			button.addEventListener('click', () => {
+				const userId = button.getAttribute('data-id');
+				id = userId;
+				state = 'confirmed';
+
+				data = {
+					state,
+				};
+				fetch(`/api/visit/update/${id}`, {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				})
+					.then((response) => {
+						// Handle the response as needed
+						if (response.status == 201) location.reload();
+						console.log('Patient updated successfully');
+					})
+					.catch((error) => {
+						// Handle the error as needed
+						console.error('Error updating patient:', error);
+					});
+			});
+		});
+
+		const newButton = document.querySelectorAll('.new-button');
+		newButton.forEach((button) => {
+			button.addEventListener('click', () => {
+				editUserModal.style.display = 'block';
+			});
+		});
+
+		// Close the modal when the close button is clicked
+		closeBtn.addEventListener('click', () => {
+			editUserModal.style.display = 'none';
+		});
+
+		editUserForm.addEventListener('submit', (e) => {
+			e.preventDefault();
+
+			const email = document.getElementById('email').value;
+			const updatedAt = new Date(document.getElementById('updatedAt').value);
+			const createdAt = new Date(document.getElementById('createdAt').value);
+			const role = document.getElementById('role').value;
+
+			const data = {
+				id,
+				email,
+				updatedAt,
+				createdAt,
+				role,
+			};
+
+			fetch(`/api/user/update/${id}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(data),
+			})
+				.then((response) => {
+					// Handle the response as needed
+					if (response.status == 201) location.reload();
+					console.log('Patient updated successfully');
+				})
+				.catch((error) => {
+					// Handle the error as needed
+					console.error('Error updating patient:', error);
+				});
+		});
+	</script>
+</html>
