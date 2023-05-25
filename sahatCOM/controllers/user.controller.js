@@ -48,18 +48,10 @@ const addNewUser = async (req, res) => {
 
 const updateUser = async (req, res, next) => {
 	try {
-		const user = await User.findById(
-			{ _id: req.params.id },
-			{},
-			{ lean: true },
-		);
+		const user = await User.findById({ _id: req.params.id }, {}, { lean: true });
 
 		if (user) {
-			const willBeUpdated = await User.findByIdAndUpdate(
-				{ _id: req.params.id },
-				req.body,
-				{ lean: true, new: true },
-			);
+			const willBeUpdated = await User.findByIdAndUpdate({ _id: req.params.id }, req.body, { lean: true, new: true });
 
 			if (willBeUpdated) {
 				return res.status(201).json({
@@ -142,13 +134,34 @@ const loginUser = async (req, res, next) => {
 	const user = await User.findOne({ email: email }).then(async (user) => {
 		if (user) {
 			const isMatch = await user.comparePassword(password);
-			if (isMatch) return res.json({ token: genToken(user.toObject()) });
+			if (isMatch) return res.status(201).json({ token: genToken(user.toObject()) });
 			else {
 				return res.status(400).json({
 					message: 'password does not match!',
 				});
 			}
 		} else {
+			return res.status(400).json({
+				message: 'no records of this email!',
+			});
+		}
+	});
+};
+const loginAdmin = async (req, res, next) => {
+	const { email, password } = req.body;
+	await User.findOne({ email: email }).then(async (admin) => {
+		console.log('admin is : ' + admin);
+		if (admin) {
+			console.log('inside if');
+			const isMatch = await admin.comparePassword(password);
+			if (isMatch) return res.status(201).json({ token: genToken(admin.toObject()) });
+			else {
+				return res.status(400).json({
+					message: 'password does not match!',
+				});
+			}
+		} else {
+			console.log('inside else');
 			return res.status(400).json({
 				message: 'no records of this email!',
 			});
@@ -163,4 +176,5 @@ module.exports = {
 	getUser,
 	getAllUsers,
 	loginUser,
+	loginAdmin,
 };

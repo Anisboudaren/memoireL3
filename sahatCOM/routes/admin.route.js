@@ -82,7 +82,16 @@ adminRouter.get('/reports', async (req, res) => {
 	try {
 		const results = await Report.find({}, {}, { lean: true });
 		console.log(results);
-		res.render('pages/reports', { users: results, focus: 4 });
+		res.render('pages/reports2', { users: results, focus: 4 });
+	} catch (error) {
+		console.error(error);
+		// Handle the error appropriately
+		res.status(500).send('Internal Server Error');
+	}
+});
+adminRouter.get('/login', async (req, res) => {
+	try {
+		res.render('pages/login');
 	} catch (error) {
 		console.error(error);
 		// Handle the error appropriately

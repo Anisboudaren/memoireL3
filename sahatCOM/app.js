@@ -19,6 +19,14 @@ app.use(express.static(path.join(__dirname, 'staticFolder')));
 
 require('./models/mongooseDB.js');
 
+app.use((req, res, next) => {
+	console.log(`Incoming request: ${req.method} ${req.url}`);
+	//console.log('Request headers:', req.headers);
+	console.log('Request body:', req.body);
+
+	next(); // Pass control to the next middleware or route handler
+});
+
 app.use('/api/absence', absenceRouter);
 app.use('/api/patient', patientRouter);
 app.use('/api/user', userRouter);

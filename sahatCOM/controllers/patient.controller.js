@@ -68,7 +68,7 @@ const addNewPatient = async (req, res, next) => {
 	const newPatient = new Patient(patient);
 
 	const { error } = newPatient.validatePatient(patient);
-
+	console.log(error);
 	if (error) {
 		return res.status(400).json({
 			result: false,

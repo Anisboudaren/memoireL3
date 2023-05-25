@@ -470,175 +470,6 @@ a.article:hover {
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* table styling */
-tbody{
-    border: none;
-}
-.green-icon {
-				color: green;
-				vertical-align: middle;
-			}
-
-			.red-icon {
-				color: red;
-				vertical-align: middle;
-			}
-
-			.grey-icon {
-				color: grey;
-				vertical-align: middle;
-			}
-			.container {
-				display: flex;
-				height: 200px;
-			}
-
-			.sidebar {
-				width: 200px;
-				background-color: #f1f1f1;
-			}
-
-			.content {
-				flex-grow: 1;
-				/* background-color: #ddd; */
-				height: 100vh;
-				padding: 30px;
-			}
-
-			table {
-				border-collapse: collapse;
-				width: 100%;
-                
-			}
-
-			th,
-			td {
-				border: 1px solid #46538559;
-				padding: 8px;
-				text-align: left;
-			}
-
-			tr:nth-child(even) {
-				background-color: #f2f2f2;
-			}
-
-			.button-container {
-				display: flex;
-				justify-content: center;
-				margin-top: 10px;
-			}
-
-			.button {
-				margin: 0 5px;
-				padding: 5px 10px;
-				background-color: #4caf50;
-				color: white;
-				border: none;
-				cursor: pointer;
-				border-radius: 4px;
-			}
-			.delete-button {
-				background-color: rgb(209, 8, 8);
-			}
-		
-			.new-button {
-				background-color: #17a2b8;
-				margin-bottom: 15px;
-			}
-			
-			/* Edit User Modal */
-			#editUserModal {
-				display: none;
-				position: fixed;
-				z-index: 1;
-				left: 0;
-				top: 0;
-				width: 100%;
-				height: 100%;
-				overflow: auto;
-				background-color: rgba(0, 0, 0, 0.4);
-			}
-			#newPatientModal {
-				display: none;
-				position: fixed;
-				z-index: 1;
-				left: 0;
-				top: 0;
-				width: 100%;
-				height: 100%;
-				overflow: auto;
-				background-color: rgba(0, 0, 0, 0.4);
-			}
-			.modal-content {
-				background-color: #fefefe;
-				margin: 5% auto;
-				padding: 20px;
-				border: 1px solid #888;
-				width: 50%;
-			}
-
-			.close {
-				color: #aaa;
-				float: right;
-				font-size: 28px;
-				font-weight: bold;
-				cursor: pointer;
-			}
-
-			.close:hover,
-			.close:focus {
-				color: black;
-				text-decoration: none;
-				cursor: pointer;
-			}
-			/* form styling  */
-			.fromContainer {
-				position: fixed;
-				width: 400px;
-				margin: 0 auto;
-				padding: 20px;
-				background-color: #949494a1;
-			}
-
-			h2 {
-				text-align: center;
-			}
-
-			form {
-				display: flex;
-				flex-direction: column;
-			}
-
-			label {
-				font-weight: bold;
-				margin-bottom: 5px;
-			}
-
-			input[type='text'],
-			input[type='email'],
-			textarea {
-				padding: 8px;
-				margin-bottom: 10px;
-				border-radius: 4px;
-				border: 1px solid #ccc;
-			}
-
-			textarea {
-				resize: vertical;
-				height: 80px;
-			}
-
-			button[type='submit'] {
-				padding: 10px 20px;
-				background-color: #17a2b8;
-				color: white;
-				border: none;
-				cursor: pointer;
-				border-radius: 4px;
-			}
-			.bg-light {
-    background-color: #7386d5!important;
-}
 	</style>
 
    </head>
@@ -646,71 +477,65 @@ tbody{
       <div class="main-wrapper">
       <!-- Sidebar  -->
       <nav id="sidebar">
-		<div class="sidebar-header">
-		   <h3><a href="/"><img class="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZBnCP_Up_ObwbaeYerYFpBfAB5gJ6-uu9A7Sdxei5tTcDQVY1"></a></h3>
-		   <strong>RE</strong>
-		</div>
-		<ul class="list-unstyled components">
-		 <li >
-			   <a href="/admin/users">
-			 <i class="fas fa-industry"></i>
-			   Users
-			  </a>
-		   
-		   </li>
-		   <li>
-			   <a href="/admin/patients">
-			 <i class="fas fa-tools"></i>
-			   Patients
-			  </a>
-		   
-		   </li>
-		   <li class="active">
-			  <a href="/admin/caregivers">
-			  <i class="fas fa-user-check"></i>
-			  Caregivers
-			  </a>
-		   </li>
-		   <li>
-			  <a aria-expanded="false"  href="/admin/apoints">
-			 <i class="fas fa-truck-loading"></i>
-			  Appointments Manager
-			  </a>
-		   </li>
-		   <li >
-			  <a  aria-expanded="false"  href="/admin/reports">
-			  <i class="fas fa-layer-group "></i>
-			   Reports log
-			  </a>
-		   </li> 
-		   <li>
-			  <a href="/customer">
-				<i class="fas fa-truck"></i>
-				Absence list
-			  </a>
-		   </li> <li>
-			  <a href="/admin">
-			  <i class="fas fa-user-shield"></i>
-			  Admin Panel
-			  </a>
-		   </li>
-		   
-		   <li>
-			  <a href="/contact-admin">
-			  <i class="fas fa-paper-plane"></i>
-			  Contact Admin
-			  </a>
-		   </li>
-		</ul>
-		<ul class="list-unstyled CTAs">
-		   <li>
-			  <a href="#" class="download" style="color:#7386D5">Exception Reports</a>
-		   </li>
-		   <li>
-			  <a href="#" class="article">About RETECH</a>
-		   </li>
-		</ul>
-	 </nav>
+         <div class="sidebar-header">
+            <h3><a href="/"><img class="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZBnCP_Up_ObwbaeYerYFpBfAB5gJ6-uu9A7Sdxei5tTcDQVY1"></a></h3>
+            <strong>RE</strong>
+         </div>
+         <ul class="list-unstyled components">
+          <li class="active">
+                <a href="/newOrder">
+              <i class="fas fa-industry"></i>
+                Users
+               </a>
+            
+            </li>
+            <li>
+                <a href="/cardboardStaging">
+              <i class="fas fa-tools"></i>
+                Patients
+               </a>
+            
+            </li>
+            <li>
+               <a href="/qc">
+               <i class="fas fa-user-check"></i>
+               Caregivers
+               </a>
+               <a aria-expanded="false"  href="/shipping">
+              <i class="fas fa-truck-loading"></i>
+               Appointments Manager
+               </a>
+               <a aria-expanded="false"  href="/admin/reports">
+               <i class="fas fa-layer-group"></i>
+                Reports log
+               </a>
+              
+               <a href="/customer">
+                 <i class="fas fa-truck"></i>
+                 Absence list
+               </a>
+               <a href="/admin">
+               <i class="fas fa-user-shield"></i>
+               Admin Panel
+               </a>
+             
+            </li>
+            <li>
+               <a href="/contact-admin">
+               <i class="fas fa-paper-plane"></i>
+               Contact Admin
+               </a>
+            </li>
+         </ul>
+         <ul class="list-unstyled CTAs">
+            <li>
+               <a href="#" class="download" style="color:#7386D5">Exception Reports</a>
+            </li>
+            <li>
+               <a href="#" class="article">About RETECH</a>
+            </li>
+         </ul>
+      </nav>
       <!-- /#sidebar-wrapper -->
       <!-- Page Content -->
       <!-- Page Content  -->
@@ -727,12 +552,12 @@ tbody{
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                <ul class="nav navbar-nav ml-auto">
-                  <!-- <li class="nav-item active">
+                  <li class="nav-item active">
                      <a class="nav-link" href="/login">Login</a>
                   </li>
                   <li class="nav-item">
                      <a class="nav-link" href="/signup">Signup</a>
-                  </li> -->
+                  </li>
                </ul>
             </div>
             
@@ -751,81 +576,74 @@ tbody{
         
         <div class ="row">
   <div class ="col">
+    <form  id="loginForm" class="admin-login">
+    <div class="login">
+  <div class="banner banner-login"></div>
+  <div class="form">
+    <div class="wrapper">
+      <div class="row">
+        <div class="label">User's Email</div>
+        <input type="text" name="email" required>
+      </div>
+      <div class="row">
+        <div class="label">Password</div>
+        <input type="password" name="password" required>
+      </div>
+      <div class="row">
+        <button id="loginButton" type="submit">Login</button>
+      </div>  
+    </div>
+    <div class="signup">
+      Forgot your password? <a href="/signup">Recover</a><br>
+      <!-- <a href="#" class="showUserForm">User Login</a>     -->
+    </div>
+  </div>
+</div>
+
+</form>
   
-	<div class="container">
+ <!-- <form  method="POST" action="/login/user">
+    <div class="login user-login">
+  <div class="banner banner-login"></div>
+  <div class="form">
+    <div class="wrapper">
+    <div class="row" style="display:none">
+        <div class="label">Enter Name</div>
+        <input type="text" name="name" value="user" required>
+      </div>
+      <div class="row">
+        <div class="label">Enter PIN</div>
+        <input type="number" id="password" name="pin" pattern="[0-9]*" required>
+      </div>
+      <div class="row">
+        <button type="submit">Login</button>
+      </div>  
+    </div>
+    <div class="signup">
+      Don't have an account? <a href="/signup">Signup</a><br>
+     <a href="#" class="showAdminForm">Admin login</a>
+    </div>
+            
+  </div>
+</div>
 
-		<div class="content">
-			<!-- table -->
-			<!-- <button class="new-button button">new</button> -->
-			<table>
-				<thead style="
-                background: #7386d5;
-            ">
-					<tr>
-						<th>Index</th>
-						<th>Email</th>
-						<th>Last Modified</th>
-						<th>Created At</th>
-						<th>Role</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					<% users.forEach((user, index) => { %>
-					<tr>
-						<td><%= index + 1 %></td>
-						<td><%= user.email %></td>
-						<td><%= new Date(user.updatedAt).toLocaleDateString("en-GB", {day: "2-digit",month: "2-digit",year: "numeric"}) %></td>
-						<td><%= new Date(user.createdAt).toLocaleDateString("en-GB", {day: "2-digit",month: "2-digit",year: "numeric"}) %></td>
-						<td><%= user.usertype %></td>
-						<td>
-							<div class="button-container">
-								<button class="edit-button button" data-id="<%= user._id %>">Edit</button>
-								<button class="delete-button button" data-id="<%= user._id %>">Delete</button>
-							</div>
-						</td>
-					</tr>
-					<% }); %>
-				</tbody>
-			</table>
-			<!-- end table -->
-			<!-- start form  -->
-			<div id="editUserModal" class="modal">
-				<div class="modal-content">
-					<span class="close">&times;</span>
-					<h2>Edit User</h2>
-					<form id="editUserForm" method="PUT">
-						<div>
-							<label for="email">Email:</label>
-							<input type="email" id="email" name="email" />
-						</div>
-						<div>
-							<label for="updatedAt">Last Modified:</label>
-							<input type="text" id="updatedAt" name="updatedAt" readonly />
-						</div>
-						<div>
-							<label for="createdAt">Created At:</label>
-							<input type="text" id="createdAt" name="createdAt" readonly />
-						</div>
-						<div>
-							<label for="role">Role:</label>
-							<input type="text" id="role" name="role" />
-						</div>
-						<button type="submit">Save</button>
-					</form>
-				</div>
-			</div>
+</form> -->
 
-			<!-- end form -->
-			<!-- new form -->
 
-			<!-- end new form -->
-		</div>
-	</div>
-
+  
   </div>
 
 </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
 </div>
                 </div>
@@ -867,130 +685,45 @@ $(document).ready(function () {
             });
         });
 
-// script for the functinonality
-	// Edit Patient Modal
-		// Event listener for delete button
-		const deleteButtons = document.querySelectorAll('.delete-button');
-		deleteButtons.forEach((button) => {
-			button.addEventListener('click', () => {
-				const userId = button.getAttribute('data-id');
-				// Perform DELETE request with the userId
-				// Replace the following code with your actual request implementation
-				fetch(`/api/user/delete/${userId}`, {
-					method: 'DELETE',
-					// Add other request options as needed
+const loginForm = document.getElementById("loginForm")
+loginForm.addEventListener('submit' , async (e)=>{
+	e.preventDefault()
+	login();
+})
+
+// functions
+ const login = async () => {
+  const url = '/api/user/loginAdmin';
+  const email = document.getElementsByName("email")[0].value;
+  const password =  document.getElementsByName("password")[0].value;
+	const data = {
+		email : email , 
+		password : password
+	}
+  fetch(url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
 				})
-					.then((response) => {
-						if (response.ok) {
-							// Reload the page after a successful DELETE request
-							console.log(userId + ' has been deleted');
-							location.reload();
+					.then(async (response) => {
+						// Handle the response as needed
+						if (response.status === 201) {
+						//	location.reload();
+						const data = await response.json()
+						localStorage.setItem('token' , data.token);
+						console.log( data.token);
+						console.log('user logged in succesfully');
+						document.location.href = "/admin"
 						}
 					})
 					.catch((error) => {
 						// Handle the error as needed
-						console.log(error);
+						console.error('Error loging in with those credentials', error);
 					});
-			});
-		});
+};
 
-		// for the form and model
-		var id;
-		const editUserModal = document.getElementById('editUserModal');
-		const editUserForm = document.getElementById('editUserForm');
-		const closeBtn = editUserModal.querySelector('.close');
-		const saveBtn = editUserModal.querySelector('button[type="submit"]');
-
-		// Event listener for edit button
-		const editButtons = document.querySelectorAll('.edit-button');
-		editButtons.forEach((button) => {
-			button.addEventListener('click', () => {
-				const userId = button.getAttribute('data-id');
-				id = userId;
-				// Perform GET request to retrieve user data
-				// Replace the following code with your actual request implementation
-				fetch(`/api/user/get/${userId}`, {
-					method: 'GET',
-					// Add other request options as needed
-				})
-					.then((response) => {
-						if (response.ok) {
-							return response.json();
-						} else {
-							throw new Error('Failed to retrieve user data');
-						}
-					})
-					.then((userData) => {
-						// Pre-fill the form with user data
-						id = userData.user._id;
-						document.getElementById('email').value = userData.user.email;
-						document.getElementById('updatedAt').value = new Date(userData.user.updatedAt).toLocaleDateString('en-GB', {
-							day: '2-digit',
-							month: '2-digit',
-							year: 'numeric',
-						});
-						document.getElementById('createdAt').value = new Date(userData.user.createdAt).toLocaleDateString('en-GB', {
-							day: '2-digit',
-							month: '2-digit',
-							year: 'numeric',
-						});
-						document.getElementById('role').value = userData.user.usertype;
-
-						// Show the edit user modal
-						editUserModal.style.display = 'block';
-					})
-					.catch((error) => {
-						// Handle the error as needed
-						console.log(error);
-					});
-			});
-		});
-
-		const newButton = document.querySelectorAll('.new-button');
-		newButton.forEach((button) => {
-			button.addEventListener('click', () => {
-				editUserModal.style.display = 'block';
-			});
-		});
-
-		// Close the modal when the close button is clicked
-		closeBtn.addEventListener('click', () => {
-			editUserModal.style.display = 'none';
-		});
-
-		editUserForm.addEventListener('submit', (e) => {
-			e.preventDefault();
-
-			const email = document.getElementById('email').value;
-			const updatedAt = new Date(document.getElementById('updatedAt').value);
-			const createdAt = new Date(document.getElementById('createdAt').value);
-			const role = document.getElementById('role').value;
-
-			const data = {
-				id,
-				email,
-				updatedAt,
-				createdAt,
-				role,
-			};
-
-			fetch(`/api/user/update/${id}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(data),
-			})
-				.then((response) => {
-					// Handle the response as needed
-					if (response.status == 201) location.reload();
-					console.log('Patient updated successfully');
-				})
-				.catch((error) => {
-					// Handle the error as needed
-					console.error('Error updating patient:', error);
-				});
-		});
 </script>
 
 

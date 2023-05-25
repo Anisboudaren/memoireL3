@@ -1,11 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>admin dashboard</title>
-		<style>
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>RE</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+      <link rel="stylesheet" href="style.css">
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+      <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+	<style>
+		body {
+	font-family: 'Lato', 'san-serif';
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.7;
+	background-color: #777;
+}
+
+html {
+	font-family: 'Roboto', sans-serif;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+	height: 100vh;
+}
+
+div.login {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 400px;
+	height: 500px;
+	background: #f6f6f6;
+	overflow: hidden;
+	box-shadow: 0px 0px 50px 2px #aaa;
+}
+
+@media (max-width: 575.98px) {
+	div.login {
+		width: 75vw;
+	}
+}
+@media (max-width: 575.98px) {
+	.login .form .signup {
+		top: 150px;
+	}
+}
+.login .banner {
+	position: absolute;
+	top: 0px;
+	height: 0px;
+	width: 100%;
+	height: 210px;
+	background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('https://i.imgur.com/WgTEhpO.jpg') center no-repeat;
+	background-size: cover;
+	transform: skew(0deg, -8deg) translateY(-25px);
+	z-index: 2;
+}
+
+.banner-login:before {
+	content: 'Login';
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	background: #6d7fcc;
+	color: #fff;
+	bottom: -35px;
+	left: 50%;
+	line-height: 80px;
+	font-size: 17px;
+	text-transform: uppercase;
+	border-radius: 50%;
+	text-align: center;
+	transform: skew(0deg, 8deg) translateX(-50%);
+}
+
+.banner-signup:before {
+	content: 'SIGNUP';
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	background: #6c757d;
+	color: #fff;
+	bottom: -35px;
+	left: 50%;
+	line-height: 80px;
+	font-size: 17px;
+	text-transform: uppercase;
+	border-radius: 50%;
+	text-align: center;
+	transform: skew(0deg, 8deg) translateX(-50%);
+}
+
+.login .form {
+	position: absolute;
+	top: 210px;
+	background: #f6f6f6;
+	width: 100%;
+	height: calc(100% - 180px);
+}
+.login .form .wrapper {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 85%;
+}
+.login .form .row {
+	margin: 20px 0px;
+}
+.login .form .row .label {
+	font-size: 12px;
+	font-weight: 600;
+	color: #646464;
+}
+.login .form .row input {
+	margin-top: 2px;
+	font-size: 13px;
+	color: #464646;
+	border: none;
+	border-bottom: 1px solid rgba(100, 100, 100, 0.6);
+	outline: none;
+	height: 25px;
+	background: transparent;
+	width: 100%;
+}
+.login .form .row button {
+	margin-top: 0px;
+	font-size: 13px;
+	color: #646464;
+	border: none;
+	outline: none;
+	height: 40px;
+	text-transform: uppercase;
+	background: #6d7fcc;
+	width: 100%;
+	color: #fff;
+	cursor: pointer;
+}
+.login .form .signup {
+	position: absolute;
+	text-align: center;
+	width: 100%;
+	font-size: 13px;
+	bottom: 50px;
+	color: #333;
+}
+.login .form .signup a {
+	color: rgba(41, 102, 147, 0.84);
+	text-decoration: none;
+	font-weight: 600;
+}
+
+input[type='date'] {
+	display: block;
+	-webkit-appearance: textfield;
+	-moz-appearance: textfield;
+	min-height: 1.2em;
+}
+
+.logo {
+	max-width: 94%;
+	margin-bottom: 2rem;
+}
+
+/* Hr fix for boostrap. Bootstrap is adding border 0 for some reason */
+hr {
+	-moz-border-bottom-colors: none;
+	-moz-border-image: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	border-color: #eeeeee -moz-use-text-color #ffffff;
+	border-style: solid none;
+	border-width: 1px 0;
+	margin: 18px 0;
+}
+
+/* 
+    Sidebar CSS begin */
+#wrapper {
+	padding-left: 0;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+#wrapper.toggled {
+	padding-left: 250px;
+}
+
+#sidebar-wrapper {
+	z-index: 1000;
+	position: fixed;
+	left: 250px;
+	width: 0;
+	height: 100%;
+	margin-left: -250px;
+	overflow-y: auto;
+	background: #333;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+	width: 250px;
+}
+
+#page-content-wrapper {
+	width: 100%;
+	position: absolute;
+	padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+	position: absolute;
+	margin-right: -250px;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+	transition: all 0.3s;
+}
+a:hover,
+a:focus {
+	color: inherit;
+	text-decoration: none;
+	transition: all 0.3s;
+}
+
+.navbar {
+	padding: 15px 10px;
+	background: #fff;
+	border: none;
+	border-radius: 0;
+	margin-bottom: 40px;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+	box-shadow: none;
+	outline: none !important;
+	border: none;
+}
+
+.line {
+	width: 100%;
+	height: 1px;
+	border-bottom: 1px dashed #ddd;
+	margin: 40px 0;
+}
+
+i,
+span {
+	display: inline-block;
+}
+
+/* ---------------------------------------------------
+        SIDEBAR STYLE
+    ----------------------------------------------------- */
+.main-wrapper {
+	display: flex;
+	align-items: stretch;
+}
+
+#sidebar {
+	min-width: 250px;
+	max-width: 250px;
+	background: #7386d5;
+	color: #fff;
+	transition: all 0.3s;
+}
+#sidebar.active {
+	min-width: 80px;
+	max-width: 80px;
+	text-align: center;
+}
+#sidebar.active .sidebar-header h3,
+#sidebar.active .CTAs {
+	display: none;
+}
+#sidebar.active .sidebar-header strong {
+	display: block;
+}
+#sidebar ul li a {
+	text-align: left;
+	color: #fff;
+}
+#sidebar.active ul li a {
+	padding: 20px 10px;
+	text-align: center;
+	font-size: 0.85em;
+}
+#sidebar.active ul li a i {
+	margin-right: 0;
+	display: block;
+	font-size: 1.8em;
+	margin-bottom: 5px;
+}
+#sidebar.active ul ul a {
+	padding: 10px !important;
+}
+#sidebar.active .dropdown-toggle::after {
+	top: auto;
+	bottom: 10px;
+	right: 50%;
+	-webkit-transform: translateX(50%);
+	-ms-transform: translateX(50%);
+	transform: translateX(50%);
+}
+#sidebar .sidebar-header {
+	padding: 20px;
+	background: #6d7fcc;
+}
+#sidebar .sidebar-header strong {
+	display: none;
+	font-size: 1.6em;
+}
+#sidebar ul.components {
+	padding: 20px 0;
+	border-bottom: 1px solid #47748b;
+}
+#sidebar ul li a {
+	padding: 10px;
+	font-size: 1.1em;
+	display: block;
+}
+#sidebar ul li a:hover {
+	color: #7386d5;
+	background: #fff;
+}
+#sidebar ul li a i {
+	margin-right: 10px;
+}
+#sidebar ul li.active > a {
+	color: #fff;
+	background: #6d7fcc;
+}
+
+a[aria-expanded='true'] {
+	color: #fff;
+	background: #6d7fcc;
+}
+a[data-toggle='collapse'] {
+	position: relative;
+}
+
+.dropdown-toggle::after {
+	display: block;
+	position: absolute;
+	top: 50%;
+	right: 20px;
+	transform: translateY(-50%);
+}
+
+ul ul a {
+	font-size: 0.9em !important;
+	padding-left: 30px !important;
+	background: #6d7fcc;
+}
+ul.CTAs {
+	padding: 20px;
+}
+ul.CTAs a {
+	text-align: center;
+	font-size: 0.9em !important;
+	display: block;
+	border-radius: 5px;
+	margin-bottom: 5px;
+}
+
+a.download {
+	background: #fff;
+	color: #7386d5;
+}
+a.article {
+	background: #6d7fcc !important;
+	color: #fff !important;
+}
+a.article:hover {
+	background: #6d7fcc !important;
+	color: #fff !important;
+}
+
+/* ---------------------------------------------------
+        CONTENT STYLE
+    ----------------------------------------------------- */
+#content {
+	background-image: url('https://i.imgur.com/FPydgVZ.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 100%;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	min-height: 100vh;
+	transition: all 0.3s;
+}
+
+/* ---------------------------------------------------
+        MEDIAQUERIES
+    ----------------------------------------------------- */
+@media (max-width: 768px) {
+	#sidebar {
+		min-width: 80px;
+		max-width: 80px;
+		text-align: center;
+		margin-left: -80px !important;
+	}
+
+	.dropdown-toggle::after {
+		top: auto;
+		bottom: 10px;
+		right: 50%;
+		-webkit-transform: translateX(50%);
+		-ms-transform: translateX(50%);
+		transform: translateX(50%);
+	}
+
+	#sidebar {
+		margin-left: 0;
+	}
+	#sidebar.active {
+		margin-left: 0 !important;
+	}
+	#sidebar .sidebar-header h3,
+	#sidebar .CTAs {
+		display: none;
+	}
+	#sidebar .sidebar-header strong {
+		display: block;
+	}
+	#sidebar ul li a {
+		padding: 20px 10px;
+	}
+	#sidebar ul li a span {
+		font-size: 0.85em;
+	}
+	#sidebar ul li a i {
+		margin-right: 0;
+		display: block;
+	}
+	#sidebar ul ul a {
+		padding: 10px !important;
+	}
+	#sidebar ul li a i {
+		font-size: 1.3em;
+	}
+
+	#sidebarCollapse span {
+		display: none;
+	}
+}
+#footer {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 100vh;
+	padding: 10px;
+	background-color: #fff;
+	border: none;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* table styling */
+tbody{
+    border: none;
+}
+.green-icon {
+				color: green;
+				vertical-align: middle;
+			}
+
+			.red-icon {
+				color: red;
+				vertical-align: middle;
+			}
+
+			.grey-icon {
+				color: grey;
+				vertical-align: middle;
+			}
 			.container {
 				display: flex;
 				height: 200px;
@@ -18,7 +500,7 @@
 
 			.content {
 				flex-grow: 1;
-				background-color: #ddd;
+				/* background-color: #ddd; */
 				height: 100vh;
 				padding: 30px;
 			}
@@ -26,11 +508,12 @@
 			table {
 				border-collapse: collapse;
 				width: 100%;
+                
 			}
 
 			th,
 			td {
-				border: 1px solid black;
+				border: 1px solid #46538559;
 				padding: 8px;
 				text-align: left;
 			}
@@ -54,7 +537,15 @@
 				cursor: pointer;
 				border-radius: 4px;
 			}
-
+			.delete-button {
+				background-color: rgb(209, 8, 8);
+			}
+		
+			.new-button {
+				background-color: #17a2b8;
+				margin-bottom: 15px;
+			}
+			
 			/* Edit User Modal */
 			#editUserModal {
 				display: none;
@@ -139,146 +630,309 @@
 
 			button[type='submit'] {
 				padding: 10px 20px;
-				background-color: #4caf50;
+				background-color: #17a2b8;
 				color: white;
 				border: none;
 				cursor: pointer;
 				border-radius: 4px;
 			}
-			.new-button {
-				background-color: #1554dd;
-				margin-bottom: 15px;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="container">
-			<div class="sidebar"><%- include('../partials/sidebar.ejs') %></div>
-			<div class="content">
-				<!-- table -->
-				<button class="new-button button">new</button>
-				<table>
-					<thead>
-						<tr>
-							<th>Index</th>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Phone</th>
-							<th>Address</th>
-							<th>Role</th>
-							<th>Specialties</th>
-							<th>Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						<% users.forEach((user, index) => { %>
-						<tr>
-							<td><%= index + 1 %></td>
-							<td><%= user.firstName %></td>
-							<td><%= user.lastName %></td>
-							<td><%= user.phone %></td>
-							<td><%= user.address %></td>
-							<td><%= user.role %></td>
-							<td><%= user.Specialties %></td>
-							<td>
-								<div class="button-container">
-									<button class="edit-button button" data-id="<%= user._id %>">Edit</button>
-									<button class="delete-button button" data-id="<%= user._id %>">Delete</button>
-								</div>
-							</td>
-						</tr>
-						<% }); %>
-					</tbody>
-				</table>
+			.bg-light {
+    background-color: #7386d5!important;
+}
+	</style>
 
-				<!-- end table -->
-				<!-- start form  -->
-				<div id="editUserModal" class="modal">
-					<div class="modal-content">
-						<span class="close">&times;</span>
-						<h2>Edit User</h2>
-						<form id="editUserForm" method="PUT">
-							<div>
-								<label for="firstName">First Name:</label>
-								<input type="text" id="firstName" name="firstName" />
-							</div>
-							<div>
-								<label for="lastName">Last Name:</label>
-								<input type="text" id="lastName" name="lastName" />
-							</div>
-							<div>
-								<label for="phone">Phone:</label>
-								<input type="text" id="phone" name="phone" />
-							</div>
-							<div>
-								<label for="address">Address:</label>
-								<input type="text" id="address" name="address" />
-							</div>
-							<div>
-								<label for="role">Role:</label>
-								<input type="text" id="role" name="role" />
-							</div>
-							<div>
-								<label for="Specialties">Specialties:</label>
-								<input type="text" id="Specialties" name="Specialties" />
-							</div>
-							<button type="submit">Save</button>
-						</form>
-					</div>
-				</div>
-
-				<!-- end form -->
-				<!-- new caregiver form  -->
-				<div id="newPatientModal" class="modal">
-					<div class="modal-content">
-						<span class="close">&times;</span>
-						<h2>new Caregiver</h2>
-						<form id="newPatientForm" method="post">
-							<div>
-								<label for="email">Email :</label>
-								<input type="text" id="newemail" name="email" />
-							</div>
-							<div>
-								<label for="password">password:</label>
-								<input type="text" id="newpassword" name="password" />
-							</div>
-							<div>
-								<label for="firstName">First Name:</label>
-								<input type="text" id="newfirstName" name="firstName" />
-							</div>
-							<div>
-								<label for="lastName">Last Name:</label>
-								<input type="text" id="newlastName" name="lastName" />
-							</div>
-							<div>
-								<label for="phoneNumber">Phone Number:</label>
-								<input type="text" id="newphoneNumber" name="phoneNumber" />
-							</div>
-							<div>
-								<label for="address">Address:</label>
-								<input type="text" id="newaddress" name="address" />
-							</div>
-							<div>
-								<label for="role">role:</label>
-								<input type="text" id="newrole" name="role" />
-							</div>
-							<div>
-								<label for="Specialties">Specialties:</label>
-								<input type="text" id="newSpecialties" name="Specialties" />
-							</div>
-
-							<button id="new" type="submit">create</button>
-						</form>
-					</div>
-				</div>
-				<!-- end new caregiver form -->
-			</div>
+   </head>
+   <body>
+      <div class="main-wrapper">
+      <!-- Sidebar  -->
+      <nav id="sidebar">
+		<div class="sidebar-header">
+		   <h3><a href="/"><img class="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZBnCP_Up_ObwbaeYerYFpBfAB5gJ6-uu9A7Sdxei5tTcDQVY1"></a></h3>
+		   <strong>RE</strong>
 		</div>
-	</body>
-	<!-- whole script -->
-	<script>
-		// Event listener for delete button
-		const deleteButtons = document.querySelectorAll('.delete-button');
+		<ul class="list-unstyled components">
+		 <li >
+			   <a href="/admin">
+			 <i class="fas fa-industry"></i>
+			   Users
+			  </a>
+		   
+		   </li>
+		   <li>
+			   <a href="/admin/patients">
+			 <i class="fas fa-tools"></i>
+			   Patients
+			  </a>
+		   
+		   </li>
+		   <li class="active">
+			  <a href="/admin/caregivers">
+			  <i class="fas fa-user-check"></i>
+			  Caregivers
+			  </a>
+		   </li>
+		   <li>
+			  <a aria-expanded="false"  href="/admin/apoints">
+			 <i class="fas fa-truck-loading"></i>
+			  Appointments Manager
+			  </a>
+		   </li>
+		   <li >
+			  <a  aria-expanded="false"  href="/admin/reports">
+			  <i class="fas fa-layer-group "></i>
+			   Reports log
+			  </a>
+		   </li> 
+		   <li>
+			  <a href="/customer">
+				<i class="fas fa-truck"></i>
+				Absence list
+			  </a>
+		   </li> <li>
+			  <a href="/admin/users">
+			  <i class="fas fa-user-shield"></i>
+			  Admin Panel
+			  </a>
+		   </li>
+		   
+		   <li>
+			  <a href="/contact-admin">
+			  <i class="fas fa-paper-plane"></i>
+			  Contact Admin
+			  </a>
+		   </li>
+		</ul>
+		<ul class="list-unstyled CTAs">
+		   <li>
+			  <a href="#" class="download" style="color:#7386D5">Exception Reports</a>
+		   </li>
+		   <li>
+			  <a href="#" class="article">About RETECH</a>
+		   </li>
+		</ul>
+	 </nav>
+      <!-- /#sidebar-wrapper -->
+      <!-- Page Content -->
+      <!-- Page Content  -->
+      <div id="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+         <div class="container-fluid">
+            <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-align-left"></i>
+            <span>Toggle Sidebar</span>
+            </button>
+           
+            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" id="dropDownNav" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               <ul class="nav navbar-nav ml-auto">
+                  <!-- <li class="nav-item active">
+                     <a class="nav-link" href="/login">Login</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="/signup">Signup</a>
+                  </li> -->
+               </ul>
+            </div>
+            
+            <ul class="nav navbar-nav mx-auto" id="loggedInCheck">
+               <div class="row">
+                  
+                  <li class="nav-item">
+                     <a class="nav-link" href="/logout"></a>
+                  </li>
+               </div>
+            </ul>
+           
+         </div>
+      </nav>
+      
+        
+        <div class ="row">
+  <div class ="col">
+  
+	<div class="container">
+		<div class="content">
+			<!-- table -->
+			<button class="new-button button">new</button>
+			<table>
+				<thead style="
+                background: #7386d5;
+            " >
+					<tr>
+						<th>Index</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Phone</th>
+						<th>Address</th>
+						<th>Role</th>
+						<th>Specialties</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% users.forEach((user, index) => { %>
+					<tr>
+						<td><%= index + 1 %></td>
+						<td><%= user.firstName %></td>
+						<td><%= user.lastName %></td>
+						<td><%= user.phone %></td>
+						<td><%= user.address %></td>
+						<td><%= user.role %></td>
+						<td><%= user.Specialties %></td>
+						<td>
+							<div class="button-container">
+								<button class="edit-button button" data-id="<%= user._id %>">Edit</button>
+								<button class="delete-button button" data-id="<%= user._id %>">Delete</button>
+							</div>
+						</td>
+					</tr>
+					<% }); %>
+				</tbody>
+			</table>
+
+			<!-- end table -->
+			<!-- start form  -->
+			<div id="editUserModal" class="modal">
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<h2>Edit Caregiver</h2>
+					<form id="editUserForm" method="PUT">
+						<div>
+							<label for="firstName">First Name:</label>
+							<input type="text" id="firstName" name="firstName" />
+						</div>
+						<div>
+							<label for="lastName">Last Name:</label>
+							<input type="text" id="lastName" name="lastName" />
+						</div>
+						<div>
+							<label for="phone">Phone:</label>
+							<input type="text" id="phone" name="phone" />
+						</div>
+						<div>
+							<label for="address">Address:</label>
+							<input type="text" id="address" name="address" />
+						</div>
+						<div>
+							<label for="role">Role:</label>
+							<input type="text" id="role" name="role" />
+						</div>
+						<div>
+							<label for="Specialties">Specialties:</label>
+							<input type="text" id="Specialties" name="Specialties" />
+						</div>
+						<button type="submit">Save</button>
+					</form>
+				</div>
+			</div>
+
+			<!-- end form -->
+			<!-- new caregiver form  -->
+			<div id="newPatientModal" class="modal">
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<h2>new Caregiver</h2>
+					<form id="newPatientForm" method="post">
+						<div>
+							<label for="email">Email :</label>
+							<input type="text" id="newemail" name="email" />
+						</div>
+						<div>
+							<label for="password">password:</label>
+							<input type="text" id="newpassword" name="password" />
+						</div>
+						<div>
+							<label for="firstName">First Name:</label>
+							<input type="text" id="newfirstName" name="firstName" />
+						</div>
+						<div>
+							<label for="lastName">Last Name:</label>
+							<input type="text" id="newlastName" name="lastName" />
+						</div>
+						<div>
+							<label for="phoneNumber">Phone Number:</label>
+							<input type="text" id="newphoneNumber" name="phoneNumber" />
+						</div>
+						<div>
+							<label for="address">Address:</label>
+							<input type="text" id="newaddress" name="address" />
+						</div>
+						<div>
+							<label for="role">role:</label>
+							<input type="text" id="newrole" name="role" />
+						</div>
+						<div>
+							<label for="Specialties">Specialties:</label>
+							<input type="text" id="newSpecialties" name="Specialties" />
+						</div>
+
+						<button id="new" type="submit">create</button>
+					</form>
+				</div>
+			</div>
+			<!-- end new caregiver form -->
+		</div>
+	</div>
+
+  </div>
+
+</div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+</div>
+                </div>
+            </div>
+            
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+
+  <script src="src/typehead.js"></script>
+  <script src="src/flash.js"></script>
+    <script src="https://kit.fontawesome.com/620dd23ec8.js"></script>
+<!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+
+
+
+    
+   
+    
+
+<script type="text/javascript">
+$(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+
+// script for the functinonality
+	// Event listener for delete button
+	const deleteButtons = document.querySelectorAll('.delete-button');
 		deleteButtons.forEach((button) => {
 			button.addEventListener('click', () => {
 				const userId = button.getAttribute('data-id');
@@ -443,5 +1097,28 @@
 					console.error('Error registering patient:', error);
 				});
 		});
-	</script>
+</script>
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
 </html>

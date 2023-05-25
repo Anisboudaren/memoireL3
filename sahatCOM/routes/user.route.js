@@ -8,6 +8,7 @@ userRouter.get('/get/:id', userController.getUser);
 userRouter.delete('/delete/:id', userController.deleteUser);
 userRouter.put('/update/:id', userController.updateUser); // when updating the model doesn't have to respect the schema anymore
 userRouter.get('/getAll', userController.getAllUsers);
+userRouter.post('/loginAdmin', userController.loginAdmin);
 userRouter.post('/login', userController.loginUser);
 
 module.exports = userRouter;
