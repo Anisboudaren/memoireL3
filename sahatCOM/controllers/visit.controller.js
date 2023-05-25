@@ -4,7 +4,7 @@ const _ = require('lodash');
 const { genToken } = require('../utils/jwt');
 
 const addNewVisit = async (req, res) => {
-	const visit = _.pick(req.body, ['patientId', 'caregiverId', 'date', 'location', 'notes']);
+	const visit = _.pick(req.body, ['patientId', 'caregiverId', 'date', 'location', 'state', 'notes']);
 
 	if (!visit.patientId || !visit.caregiverId || !visit.date) {
 		return res.json({

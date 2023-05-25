@@ -8,7 +8,8 @@ const caregiverRouter = require('./routes/cg.route');
 const patientRouter = require('./routes/patient.route');
 const visitRouter = require('./routes/visit.route');
 const adminRouter = require('./routes/admin.route');
-
+const absenceRouter = require('./routes/absence.route');
+const reportRouter = require('./routes/report.route');
 //define data type
 app.use(express.json());
 app.use(bodyParser.json());
@@ -18,10 +19,12 @@ app.use(express.static(path.join(__dirname, 'staticFolder')));
 
 require('./models/mongooseDB.js');
 
+app.use('/api/absence', absenceRouter);
 app.use('/api/patient', patientRouter);
 app.use('/api/user', userRouter);
 app.use('/api/caregiver', caregiverRouter);
 app.use('/api/visit', visitRouter);
+app.use('/api/report', reportRouter);
 app.use('/admin', adminRouter);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, (err, suc) => {
